@@ -1,4 +1,19 @@
 # BioSpec
+
+## Quickstart
+
+1. Clone the repository to obtain templates and prompts
+
+## File Pathing
+
+To work correctly, prompt files must be stored in your project/workspace root under `.github/prompts` (e.g, `.github/prompts/biospec.create_project.prompt.md`). 
+
+Templates are expected to be stored in your project/workspace root under `.biospec`. 
+
+Note: These folders can appear as hidden on some systems. VS Code should display them in its explorer.
+
+## Background
+
 From ABACBS Abstract:
 
 **BioSpec: Research project specifications to guide agent-assisted computational biology**
