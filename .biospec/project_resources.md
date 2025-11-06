@@ -1,8 +1,12 @@
+---
+template_name: Project Resources
+schema_version: 0.1
+last_updated: YYYY-MM-DD
+---
+
 # Project Resources
 
 <!-- Provide a record of the resources and workspace you will primarily work within for the project, and note paths/links to any SOP documents -->
-
-*Document version: {0.1} | Last updated: YYYY-MM-DD*
 
 ## Computing Resources
 ### Hardware Specifications

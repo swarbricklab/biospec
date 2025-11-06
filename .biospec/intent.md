@@ -1,8 +1,12 @@
+---
+template_name: Scientific Intent
+schema_version: 0.1
+last_updated: YYYY-MM-DD
+---
+
 # Scientific Intent
 
 <!-- Provide a record of your scientific intent for the project -->
-
-*Document version: {0.1} | Last updated: YYYY-MM-DD*
 
 ## Research Questions/Aims
 ### Primary Questions/Aims
