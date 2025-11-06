@@ -1,8 +1,12 @@
+---
+template_name: Project Overview
+schema_version: 0.1
+last_updated: YYYY-MM-DD
+---
+
 # Project Overview
 
 <!-- High level project overview -->
-
-*Document version: {0.1} | Last updated: YYYY-MM-DD*
 
 ## Basic Information
 - **Project Title**: 

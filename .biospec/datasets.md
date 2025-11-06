@@ -1,8 +1,12 @@
+---
+template_name: Datasets
+schema_version: 0.1
+last_updated: YYYY-MM-DD
+---
+
 # Datasets
 
 <!-- Provide a record of your datasets/cohorts, alongside key data -->
-
-*Document version: {0.1} | Last updated: YYYY-MM-DD*
 
 ## Data Overview
 
