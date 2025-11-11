@@ -12,11 +12,12 @@ Optional: User may specify validation scope, mode, or specific templates.
 
 **Examples**:
 - Empty (default): Validate all templates in standard mode
-- `intent.md`: Validate only the intent template
+- `intent_overview.md`: Validate only the intent overview template
+- `intent-1.md`: Validate specific intent file
 - `--mode strict`: Check required AND recommended fields, flag minor ambiguities
 - `--mode quick`: Check only required fields, fast completeness check
 - `--threshold incomplete`: Only flag blank/incomplete (skip ambiguities)
-- `intent.md datasets.md`: Validate multiple specific templates
+- `intent_overview.md dataset_overview.md`: Validate multiple specific templates
 
 ## Outline
 
@@ -39,8 +40,8 @@ Extract user preferences from arguments:
 - `blank`: Only show blank fields (⬜)
 
 **Template Focus**:
-- `all` (default): Validate all templates (overview, intent, datasets, resources, relationships)
-- Specific template(s): Only validate named template(s)
+- `all` (default): Validate all templates (overview files, individual intent/dataset/analysis files)
+- Specific template(s): Only validate named template(s) (e.g., `intent_overview.md` or `intents/intent-1.md`)
 
 **Help Mode**:
 - `basic` (default): Moderate guiding questions
@@ -51,14 +52,18 @@ Extract user preferences from arguments:
 
 Read templates from `project/` directory:
 
-**Always validate** (if not template-focused):
+**Always validate overview/orchestrator files** (if not template-focused):
 1. `project/project_overview.md` - Project definition
-2. `project/intent.md` - Research intent
-3. `project/datasets.md` - Data documentation
+2. `project/intent_overview.md` - Intent and analysis overview
+3. `project/dataset_overview.md` - Dataset overview
+
+**Validate granular files** (if present):
+4. `project/intents/*.md` - Individual intent files
+5. `project/datasets/*.md` - Individual dataset files
+6. `project/analyses/*.md` - Individual analysis files
 
 **Optionally validate**:
-4. `project/project_resources.md` - Resources and infrastructure
-5. `project/relationships.md` - Cross-template alignment
+7. `project/project_resources.md` - Resources and infrastructure
 
 **Error handling**:
 - If `project/` directory doesn't exist: ERROR "No project/ directory found. Run /biospec.create_project or /biospec.parse_existing_project first."
@@ -339,28 +344,6 @@ Define required vs optional fields and validation criteria for each template:
 - Environment "local" but computational scope suggests HPC needs
 - Capacity "large" → how large? give estimate in GB/TB
 
-#### relationships.md Validation
-
-**Required sections**:
-
-| Section | Validation Criteria | Common Issues |
-|---------|---------------------|---------------|
-| **RQ/Aim vs Datasets mapping** | All RQs from intent.md mapped to ≥1 dataset | Missing RQs, unmapped datasets |
-| **Scope Check** | Alignment status specified | Status missing, format wrong |
-
-**Mapping validation**:
-- All RQs/Aims from intent.md should appear in relationships.md
-- All datasets from datasets.md should appear in relationships.md
-- Each RQ/Aim mapped to at least 1 dataset
-
-**Format validation**:
-- **Alignment status**: Should use ✓ Aligned | ⚠ Minor misalignment | ✗ Major misalignment
-- **Pros/cons**: Each dataset-RQ pairing should have pros AND cons listed
-
-**Completeness checks**:
-- No orphaned RQs (RQ exists but not mapped to any dataset)
-- No orphaned datasets (dataset exists but not mapped to any RQ)
-
 ### 6. Placeholder Detection Patterns
 
 Automatically flag these as BLANK:
@@ -593,21 +576,21 @@ Validate alignment across templates:
 
 #### RQ/Aim Consistency
 
-**Check**: All RQs/Aims in intent.md appear in relationships.md
+**Check**: All RQs/Aims listed in individual intent files appear in intent_overview.md
 
 **If inconsistent**:
 ```markdown
-> 🟨 **INCOMPLETE: Research question not mapped in relationships.md**
-> - **What's missing**: RQ1-TME from intent.md does not appear in relationships.md
-> - **How to complete**: Add RQ1-TME to relationships.md with dataset mapping
-> - **Location to update**: relationships.md, "Research Questions/Aims vs Datasets" section
+> 🟨 **INCOMPLETE: Research question not listed in intent_overview.md**
+> - **What's missing**: RQ1-TME from intent-1.md does not appear in intent_overview.md
+> - **How to complete**: Add RQ1-TME to intent_overview.md summary table
+> - **Location to update**: intent_overview.md, "List of Intents" and summary table
 ```
 
 #### Dataset Consistency
 
-**Check**: All datasets in datasets.md appear in relationships.md
+**Check**: All datasets listed in individual dataset files appear in dataset_overview.md
 
-**If inconsistent**: Flag as INCOMPLETE in relationships.md
+**If inconsistent**: Flag as INCOMPLETE in dataset_overview.md
 
 #### Biological Scale Consistency
 
@@ -651,11 +634,10 @@ For each template and overall:
 - <50%: Needs Work
 
 **Overall completeness**: Weighted average across templates
-- intent.md: 40% weight (most critical)
-- datasets.md: 30% weight
+- intent_overview.md and individual intent files: 40% weight (most critical)
+- dataset_overview.md and individual dataset files: 30% weight
 - project_overview.md: 20% weight
-- relationships.md: 5% weight
-- project_resources.md: 5% weight
+- project_resources.md: 10% weight
 
 ### 12. Generate Validation Report
 
@@ -759,21 +741,6 @@ Progress: [██████████░░░░░░░░░░] {X}%
 
 **Issues**: {count} blank, {count} incomplete, {count} ambiguous
 
-### relationships.md: {X}%
-
-```
-Progress: [████████████████░░░░] {X}%
-```
-
-**Status**: {Excellent | Good | Fair | Needs Work}
-
-**Consistency Checks**:
-- ✓ All RQs mapped to datasets: {Yes | No}
-- ✓ All datasets mapped to RQs: {Yes | No}
-- ✓ Scope alignment specified: {Yes | No}
-
-**Issues**: {count} blank, {count} incomplete, {count} ambiguous
-
 ---
 
 ## Priority Actions
@@ -837,8 +804,8 @@ These fields must use approved values:
 
 {If any consistency issues:}
 
-1. **Missing RQ mapping**: RQ2-survival in intent.md not mapped in relationships.md
-2. **Orphaned dataset**: Dataset 3 in datasets.md not mapped to any RQ in relationships.md
+1. **Intent not in overview**: Intent-2 exists in intents/intent-2.md but not listed in intent_overview.md
+2. **Dataset not in overview**: Dataset-3 exists in datasets/dataset-3.md but not listed in dataset_overview.md
 3. **Scale mismatch**: project_overview.md says "scRNA-seq" but datasets.md has "proteomics"
 
 [Continue for all issues]
@@ -942,10 +909,12 @@ After validation complete, output summary message:
 
 **Templates Validated & Updated**:
 - ✓ project_overview.md ({X}% complete)
-- ✓ intent.md ({X}% complete)
-- ✓ datasets.md ({X}% complete)
+- ✓ intent_overview.md ({X}% complete)
+- ✓ dataset_overview.md ({X}% complete)
 - ✓ project_resources.md ({X}% complete)
-- ✓ relationships.md ({X}% complete)
+- ✓ Individual intent files ({count} files)
+- ✓ Individual dataset files ({count} files)
+- ✓ Individual analysis files ({count} files)
 
 **Overall Completeness**: {X}% ({status})
 

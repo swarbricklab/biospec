@@ -18,16 +18,30 @@ Given that project description, do this:
 
 ### 1. Initialize Project Structure
 
-Create a new `project/` directory in the repository root and copy all template files from `.biospec/` to `project/`:
+Create a new `project/` directory in the repository root with the following structure:
+
+```
+project/
+├── intents/           # Individual intent files (instantiated from subtemplates)
+├── datasets/          # Individual dataset files (instantiated from subtemplates)
+├── analyses/          # Individual analysis files (instantiated from subtemplates)
+├── intent_overview.md    # Index/orchestrator for intents
+├── dataset_overview.md   # Index/orchestrator for datasets
+├── project_overview.md   # Singleton
+└── project_resources.md  # Singleton
+```
+
+Copy singleton template files from `.biospec/` to `project/`:
 - project_overview.md
-- intent.md
-- datasets.md
+- intent_overview.md
+- dataset_overview.md
 - project_resources.md
-- relationships.md
 
 Set initial metadata in each file:
 - Version: 0.1
 - Last updated: [Current date in YYYY-MM-DD format]
+
+**Note**: Individual intent, dataset, and analysis files will be created by instantiating subtemplates from `.biospec/subtemplates/` in subsequent steps.
 
 ### 2. Parse User Description
 
@@ -108,9 +122,20 @@ Identify computational activities mentioned:
 
 If nothing specified: Make informed guesses based on project type and data, but mark assumptions in the Assumptions field.
 
-### 3. Template Population Order
+### 3. Template Population Strategy
 
-Populate templates in dependency order. For each template, only fill fields with **high confidence** based on explicit user input.
+The new granular structure uses **subtemplates** that get instantiated for each component. Populate in this order:
+
+1. **Singleton templates** (project_overview.md, project_resources.md) - populated directly
+2. **Overview/orchestrator templates** (intent_overview.md, dataset_overview.md) - populated with links to granular files
+3. **Granular subtemplate instances** - created by copying from `.biospec/subtemplates/` and populating:
+   - `project/intents/intent-{n}.md` (one per research question/aim/goal)
+   - `project/datasets/dataset-{n}.md` (one per dataset)
+   - `project/analyses/analysis-{n}.md` (one per analysis objective)
+
+For each template, only fill fields with **high confidence** based on explicit user input.
+
+### 4. Populate Singleton Templates
 
 #### Template 1: project_overview.md
 
@@ -144,88 +169,180 @@ Populate templates in dependency order. For each template, only fill fields with
 - Only fill if user mentions reference studies, papers, or methods to reproduce
 - Leave blank if not mentioned (don't invent references)
 
-#### Template 2: intent.md
+### 5. Create and Populate Intent Subtemplate Instances
 
-**Research Questions/Aims**:
-- **Primary**: Extract the main question or aim using classification from step 2c
-- Assign a short identifier (e.g., "RQ1-TME" for tumor microenvironment question)
-- **Secondary**: List additional questions/aims if mentioned
-- For each, specify how to measure and communicate outcomes if mentioned
+For each research question, aim, or goal identified in step 2c:
 
-**Hypotheses**:
-- Only fill if user explicitly states a hypothesis or testable prediction
-- **Primary Hypothesis**: The main prediction being tested
-  - Generate short ID (e.g., "H1-TcellResponse")
-  - State the hypothesis clearly
-  - Formulate null hypothesis (e.g., "No association between X and Y")
-  - Formulate alternative hypothesis (e.g., "Positive correlation between X and Y")
-  - Add rationale if provided in description
-- **Supporting Hypotheses**: Secondary predictions if mentioned
+**Step 1**: Create directory `project/intents/` if not exists
 
-**IMPORTANT**: If the project is exploratory with no specific hypothesis, leave the hypothesis section blank or note "Exploratory study - no specific hypothesis"
+**Step 2**: For each intent (numbered 1, 2, 3...):
+1. Copy `.biospec/subtemplates/intent.md` to `project/intents/intent-{n}.md`
+2. Update frontmatter:
+   - `intent_id: {n}`
+   - `intent_type: question | aim | goal` (based on classification from step 2c)
+   - `last_updated: {current date}`
+3. Populate fields:
 
-**Analysis Objectives**:
-- **Must Have**: Primary analysis tasks mentioned (high priority)
-- **Nice to Have**: Secondary analyses if mentioned (moderate priority)
-- **Future Considerations**: Mentioned extensions or follow-ups (low priority)
+**Short Identifier**: e.g., "RQ1-TME", "Aim1-CellTypes", "Goal1-Survival"
 
-**Milestones**:
-- Extract high-level milestones if mentioned
-- Otherwise, create 3-5 generic milestones: Data acquisition → QC → Analysis → Interpretation → Communication
+**Statement**:
+- Type: Question | Aim | Goal
+- Statement: The actual research question/aim/goal text
 
-**Dependencies**:
-- Note sequential requirements if mentioned (e.g., "need cell annotations before CNV analysis")
+**Associated Hypothesis** (if applicable):
+- **Has Testable Hypothesis**: Yes | No
+- If Yes, fill hypothesis details:
+  - Short ID: e.g., "H1-TcellResponse"
+  - Statement: The hypothesis
+  - Rationale: Why you expect this result
+  - Null Hypothesis: "No association between X and Y"
+  - Alternative Hypothesis: "Positive correlation between X and Y"
+- If No or exploratory project: Leave blank or note "Exploratory - no specific hypothesis"
 
-**Expected Outputs**:
-- **Primary Deliverables**: Main outputs mentioned (figures, reports, manuscripts)
-- **Secondary Deliverables**: Additional outputs if mentioned
+**Expected Outcomes**:
+- Outcomes: What results are expected
+- How to Measure: Measurement methods
+- How to Communicate: e.g., "Plot of X vs Y", "Table showing Z"
 
-**Summary Table**:
-- Populate with RQ/Aim, Outcome, Measurement Method, Success Criteria, Priority for each question/aim
-- Leave Success Criteria blank initially (often requires clarification)
+**Success Criteria**:
+- Criteria: What defines success
+- Priority: High | Medium | Low
 
-#### Template 3: datasets.md
+**Related Components**:
+- Related Datasets: List dataset IDs (e.g., "dataset-1.md", "dataset-2.md")
+- Related Analyses: List analysis IDs (e.g., "analysis-1.md")
+
+**Step 3**: Repeat for all identified intents
+
+**Example**:
+If user mentions "We want to understand how tumor cells interact with immune cells" (question) and "We hypothesize that T cell infiltration correlates with response" (hypothesis):
+- Create `project/intents/intent-1.md` with type="question", statement="How do tumor cells interact with immune cells?", has_hypothesis=Yes
+
+### 6. Create and Populate Dataset Subtemplate Instances
 
 For each dataset identified in step 2e:
 
-**Dataset {N}: {Name/Identifier}**
+**Step 1**: Create directory `project/datasets/` if not exists
+
+**Step 2**: For each dataset (numbered 1, 2, 3...):
+1. Copy `.biospec/subtemplates/dataset.md` to `project/datasets/dataset-{n}.md`
+2. Update frontmatter:
+   - `dataset_id: {n}`
+   - `last_updated: {current date}`
+3. Populate fields:
+
+**Dataset Name/Identifier**: e.g., "Public melanoma scRNA-seq (GSE12345)", "Internal Visium cohort"
 
 **Data Types**:
-- Primary Data Type: e.g., "scRNA-seq expression matrix (Anndata)"
+- Primary Data Type (And format): e.g., "scRNA-seq expression matrix (Anndata)"
 - Supplementary Data Types: e.g., "Cell metadata (CSV)", "UMAP embeddings"
-- Degree of processing: primary | secondary | tertiary (use matching from step 2e)
-- Reference Data Required: e.g., "GRCh38", "10X reference genome" (if mentioned)
-- Access: Public | In-house (mark Public if accession number given, otherwise assume In-house)
+- Degree of processing: Primary | Secondary | Tertiary (from step 2e matching)
+- Reference Data Required: e.g., "GRCh38" (if mentioned)
+- Access: Public | In-house
 - Year of creation: If mentioned
 
 **Sample Information**:
-- Extract counts mentioned: "50 patients", "3 replicates", "tumor and normal pairs"
-- Total Samples: Numeric count if available
-- Biological Replicates: If mentioned
-- Technical Replicates: If mentioned
-- Control Samples: If mentioned (negative controls, reference samples)
-- Batch Information: Note if batches, cohorts, or temporal collection mentioned
+- Total Samples: Numeric count
+- Biological Replicates: Count if mentioned
+- Technical Replicates: Count if mentioned
+- Control Samples: Types and counts
+- Batch Information: Batch structure if mentioned
 
 **Metadata Requirements**:
-- List metadata needed: clinical variables, technical covariates, sample annotations
-- Note what exists vs. what needs to be created/obtained
+- List required metadata fields
+- Note what exists vs. needs creation
 
 **Additional Information**:
-- Any other dataset-specific details from description
+- Free text dataset-specific details
 
 **Publication Plans**:
-- Note if manuscript, technical report, or wider study component mentioned
+- Note publication intentions if mentioned
 
 **Data Status**:
-- QC tasks completed: Leave blank unless explicitly stated
-- QC tasks to complete: Infer standard QC for data type (e.g., "Quality filtering, doublet removal" for scRNA-seq)
+- QC tasks completed: Leave blank unless stated
+- QC tasks to complete: Infer standard QC for data type
 
-**Summary Table** (at top):
-- Populate table row for each dataset with Source, Access, Format, Size, Update Frequency
-- Use "Unknown" for Size if not mentioned
-- Use "Static" for Update Frequency unless ongoing collection mentioned
+**Related Components**:
+- Addresses Intents: List intent IDs (e.g., "intent-1.md", "intent-2.md")
+- Used in Analyses: List analysis IDs (e.g., "analysis-1.md")
 
-#### Template 4: project_resources.md
+**Step 3**: Repeat for all identified datasets
+
+### 7. Create and Populate Analysis Subtemplate Instances
+
+For each analysis objective identified in step 2c:
+
+**Step 1**: Create directory `project/analyses/` if not exists
+
+**Step 2**: For each analysis (numbered 1, 2, 3...):
+1. Copy `.biospec/subtemplates/analysis.md` to `project/analyses/analysis-{n}.md`
+2. Update frontmatter:
+   - `analysis_id: {n}`
+   - `priority: must-have | nice-to-have | future`
+   - `last_updated: {current date}`
+3. Populate fields:
+
+**Short Descriptor**: e.g., "Differential Expression", "Cell Type Annotation", "Spatial Analysis"
+
+**Description**: What this analysis entails
+
+**Priority**:
+- Priority Level: Must Have | Nice to Have | Future Consideration
+- Justification: Why this priority
+
+**Methods & Tools**:
+- Analysis Type: e.g., "Differential expression", "Clustering"
+- Tools/Packages: e.g., "Seurat", "DESeq2"
+- Parameters/Settings: If mentioned
+
+**Dependencies**:
+- Sequential Dependencies: What must be done first
+- Data Dependencies: Required inputs
+- Technical Dependencies: Required tools/environments
+
+**Expected Outputs**:
+- Primary Outputs: Main results
+- Intermediate Files: Temporary files
+- Visualizations: Plots/figures
+
+**Success Criteria**: How to know analysis succeeded
+
+**Related Components**:
+- Addresses Intents: List intent IDs
+- Uses Datasets: List dataset IDs
+
+**Step 3**: Repeat for all identified analyses
+
+### 8. Populate Overview/Orchestrator Templates
+
+#### Template: intent_overview.md
+
+**Intents Section**:
+- List of Intents: Add link for each created intent file: `[Intent {n}: {Short ID}](intents/intent-{n}.md)`
+- Summary Table: Add row for each intent with ID, Type, Statement (brief), Has Hypothesis, Priority, Success Criteria
+
+**Analyses Section**:
+- Must Have: Link to high-priority analysis files
+- Nice to Have: Link to moderate-priority analysis files
+- Future Considerations: Link to future analysis files
+
+**Project-Level Information**:
+- Milestones: High-level milestones (extracted or generic: Data acquisition → QC → Analysis → Interpretation → Communication)
+- Dependencies: Cross-cutting dependencies
+- Expected Outputs: Primary and secondary deliverables
+
+#### Template: dataset_overview.md
+
+**Datasets Section**:
+- List of Datasets: Add link for each created dataset file: `[Dataset {n}: {Name}](datasets/dataset-{n}.md)`
+- Summary Table: Add row for each dataset with ID, Name, Source, Access, Data Type, Format, Size, Processing Level, Update Frequency
+
+**Overall Data Strategy**:
+- Data Integration Plan: How datasets will be integrated
+- Cross-Dataset Considerations: Batch effects, normalization
+- Data Sharing & Publication: Overall sharing strategy
+
+### 9. Populate Resources Template
 
 **Computing Resources**:
 - Fill Hardware Specifications only if explicitly mentioned (CPU, RAM, GPU, OS)
@@ -255,60 +372,9 @@ For each dataset identified in step 2e:
 - Leave all blank unless specific SOPs are mentioned
 - These are typically filled during project execution
 
-#### Template 5: relationships.md
+### 10. Quality Validation
 
-This template validates consistency across other templates.
-
-**Research Questions/Aims vs Datasets**:
-
-For each RQ/Aim in intent.md:
-1. List which dataset(s) from datasets.md can address it
-2. Describe what each dataset contributes
-3. Identify pros: strengths of dataset for answering question (sample size, resolution, controls)
-4. Identify cons: limitations (sample size, missing metadata, processing level, batch effects)
-
-**Format example**:
-```
-### RQ1-TME: How do tumor cells interact with immune cells in melanoma?
-
-**Relevant Datasets**:
-- Dataset 1 (scRNA-seq, 50 patients): Provides single-cell resolution of TME composition
-  - **Pros**: Large sample size, paired tumor/normal, cell-level resolution
-  - **Cons**: Lack of spatial information, potential droplet bias
-- Dataset 2 (Visium spatial, 10 patients subset): Provides spatial context
-  - **Pros**: Spatial relationships preserved, matched to scRNA-seq
-  - **Cons**: Lower resolution, smaller sample size
-```
-
-**Scope Check**:
-
-Validate alignment between:
-1. **Goals (intent.md) vs Scope (project_overview.md)**:
-   - Do the research questions fit within "in-scope" computational activities?
-   - Are there analysis objectives that exceed stated scope?
-   - Flag misalignments: "Analysis objective X requires deep learning, which is marked out of scope"
-
-2. **Computational Activities vs Available Data**:
-   - Can stated objectives be achieved with available datasets?
-   - Are there data gaps that prevent answering research questions?
-   - Flag issues: "RQ requires longitudinal data but only cross-sectional samples available"
-
-3. **Resource Requirements vs Stated Resources**:
-   - Are computational resources sufficient for data types and analyses?
-   - Flag if incompatible: "Processing 50 scRNA-seq samples requires HPC, but only local compute specified"
-
-**Output format**:
-```
-**Alignment Status**: ✓ Aligned | ⚠ Minor misalignment | ✗ Major misalignment
-
-**Issues identified**:
-1. [Description of misalignment]
-2. [Suggested resolution]
-```
-
-### 4. Quality Validation
-
-After populating all templates, validate completeness and consistency:
+After populating all templates and subtemplate instances, validate completeness and consistency:
 
 #### Validation Checklist
 
@@ -320,6 +386,7 @@ Run through this checklist and document pass/fail status:
 - [ ] No implementation details leaked (specific code, file paths, etc.)
 - [ ] Version numbers and timestamps updated
 - [ ] Consistent terminology across templates
+- [ ] All granular files properly linked in overview files
 
 **project_overview.md**:
 - [ ] Project type selected from controlled vocabulary
@@ -328,33 +395,41 @@ Run through this checklist and document pass/fail status:
 - [ ] Keywords include biological, technical, and methodological terms
 - [ ] Scope section distinguishes in-scope vs out-of-scope clearly
 
-**intent.md**:
-- [ ] Research questions properly formatted as questions (interrogative)
-- [ ] Research aims properly formatted as goal statements (infinitive)
-- [ ] Hypotheses include null and alternative forms (if present)
-- [ ] Hypotheses only included if explicitly testable prediction provided
-- [ ] Analysis objectives categorized by priority (must/nice/future)
-- [ ] Each RQ/Aim has a short identifier
-- [ ] Summary table populated with all RQs/Aims
+**intent_overview.md**:
+- [ ] All created intent files listed and linked
+- [ ] Summary table includes all intents with accurate information
+- [ ] Analyses categorized by priority (must-have, nice-to-have, future)
+- [ ] All analysis files listed and linked
+- [ ] Milestones and dependencies populated
 
-**datasets.md**:
-- [ ] Each dataset has unique identifier (Dataset 1, Dataset 2, etc.)
+**Individual intent files** (project/intents/intent-*.md):
+- [ ] Intent type correctly classified (question, aim, goal)
+- [ ] Hypothesis included only if testable prediction provided
+- [ ] Hypotheses include null and alternative forms (if present)
+- [ ] Short identifier consistent across files
+- [ ] Related datasets and analyses properly linked
+
+**dataset_overview.md**:
+- [ ] All created dataset files listed and linked
+- [ ] Summary table includes all datasets with accurate information
+- [ ] Overall data strategy sections populated if multiple datasets
+
+**Individual dataset files** (project/datasets/dataset-*.md):
+- [ ] Each dataset has unique identifier
 - [ ] Processing level specified (primary/secondary/tertiary)
 - [ ] Sample information extracted (counts, replicates, controls)
-- [ ] Summary table includes all datasets
-- [ ] Data status section includes relevant QC tasks for data type
+- [ ] Related intents and analyses properly linked
+
+**Individual analysis files** (project/analyses/analysis-*.md):
+- [ ] Priority level specified (must-have/nice-to-have/future)
+- [ ] Methods and tools mentioned if known
+- [ ] Dependencies documented
+- [ ] Related intents and datasets properly linked
 
 **project_resources.md**:
 - [ ] Computing environment specified (local/HPC/cloud/hybrid)
 - [ ] Storage location matches computing environment
 - [ ] Container/environment preference noted (even if "None")
-
-**relationships.md**:
-- [ ] All RQs/Aims from intent.md addressed
-- [ ] Each RQ/Aim mapped to at least one dataset
-- [ ] Pros/cons listed for each dataset-RQ pairing
-- [ ] Scope check performed with alignment status
-- [ ] Specific misalignments flagged with suggested resolutions
 
 #### Critical Gaps Check
 
@@ -439,7 +514,7 @@ Present questions using this structured format:
 5. Update templates by replacing each [NEEDS CLARIFICATION] marker with the user's selected or provided answer
 6. Re-run validation after all clarifications resolved
 
-### 6. Report Completion
+### 12. Report Completion
 
 After successful validation (with or without clarifications), report:
 
@@ -448,51 +523,64 @@ After successful validation (with or without clarifications), report:
 
 **Location**: `project/` directory
 
-**Templates populated**:
+**Overview Templates populated**:
 - ✓ project_overview.md (version 0.1)
-- ✓ intent.md (version 0.1)
-- ✓ datasets.md (version 0.1)
+- ✓ intent_overview.md (version 0.1)
+- ✓ dataset_overview.md (version 0.1)
 - ✓ project_resources.md (version 0.1)
-- ✓ relationships.md (version 0.1)
+
+**Granular Components Created**:
+- ✓ {n} Intent files in project/intents/
+- ✓ {n} Dataset files in project/datasets/
+- ✓ {n} Analysis files in project/analyses/
+
+**Component Summary**:
+- Intents: {list intent IDs and short identifiers}
+- Datasets: {list dataset IDs and names}
+- Analyses: {list analysis IDs and descriptors}
 
 **Validation Status**: {Pass/Pass with assumptions/Needs review}
 
 **Completion Summary**:
-- Total fields populated: {count}
-- High-confidence fields: {count}
+- Total granular files created: {count}
+- High-confidence fields populated: {count}
 - Fields left blank for review: {count}
 - Assumptions documented: {count}
 - Clarifications resolved: {count}
 
 **Fields Requiring Manual Review** (if any):
-- {template_name}: {field_name} - {reason}
+- {file_name}: {field_name} - {reason}
 
 **Critical Assumptions Made** (if any):
 1. {Assumption description and rationale}
 
 **Next Steps**:
-1. Review all populated templates for accuracy
+1. Review all populated files for accuracy
+   - Overview files: intent_overview.md, dataset_overview.md
+   - Granular files: project/intents/*, project/datasets/*, project/analyses/*
 2. Fill blank fields based on project knowledge
-3. Run `/biospec.validate_fields` to check completeness
-4. Run `/biospec.review_intent` for critical assessment before proceeding
+3. Verify cross-references between files are correct
+4. Run `/biospec.validate_fields` to check completeness
+5. Run `/biospec.review_intent` for critical assessment before proceeding
 
 **Notes**:
 - All templates start at version 0.1
 - Update "Last updated" timestamp when making manual edits
-- Template checklists are at the bottom of each file - mark as completed when done
+- Granular structure allows independent versioning and review of components
+- Overview files aggregate information from granular files - keep synchronized
 ```
 
-### 7. Error Handling
+### 13. Error Handling
 
 Handle these error conditions:
 
 | Error Condition | Action |
 |----------------|--------|
 | Empty user input | ERROR "No project description provided. Please provide a natural language description of your bioinformatics project." |
-| No research question identifiable | ERROR "Cannot identify research question or aim. Please describe what you want to investigate or discover." |
+| No research question identifiable | ERROR "Cannot identify research question, aim, or goal. Please describe what you want to investigate or discover." |
 | Completely ambiguous project type | Ask single clarification question about whether project is exploratory or hypothesis-driven |
-| No datasets mentioned | WARN "No datasets identified. Templates created but datasets.md left mostly blank. Please populate manually." |
-| Validation fails after 3 iterations | WARN "Some validation items remain incomplete. Review populated templates manually." Include specific failing items. |
+| No datasets mentioned | WARN "No datasets identified. Templates created but dataset_overview.md left mostly blank. Please populate manually or create dataset files in project/datasets/." |
+| Validation fails after 3 iterations | WARN "Some validation items remain incomplete. Review populated templates and granular files manually." Include specific failing items. |
 
 ---
 
@@ -574,7 +662,7 @@ Handle these error conditions:
   - Dataset 1: scRNA-seq (Public, GSE12345), 100 patients, secondary processing
   - Dataset 2: Phenocycler imaging (In-house), 30 samples, likely tertiary
   - Dataset 3: Bulk RNA-seq from TCGA (Public), 500 samples, secondary/tertiary
-- Multi-platform integration challenge → note in relationships.md
+- Multi-platform integration challenge → note in dataset_overview.md or analysis files
 
 ### Special Cases
 
@@ -589,7 +677,7 @@ If description sounds targeted but no hypothesis provided:
 
 If user mentions tool unusual for data type (e.g., "analyze scRNA-seq with limma"):
 - Don't second-guess - record as stated
-- Note in relationships.md scope check if potentially problematic
+- Note in analysis files or intent_overview.md if potentially problematic
 - No [NEEDS CLARIFICATION] unless clearly impossible
 
 #### Case 3: Very Brief Description
@@ -603,7 +691,7 @@ If description is < 2 sentences with minimal detail:
 #### Case 4: Multi-Phase Project
 
 If description mentions phases/stages (e.g., "First QC, then clustering, then integration"):
-- Capture phases as milestones in intent.md
+- Capture phases as milestones in intent files
 - Note dependencies between phases
 - All analyses still go in computational scope (in project_overview.md)
 
@@ -637,7 +725,17 @@ If validation fails on first pass:
 ## Notes
 
 - The `project/` directory is the canonical location for the active project charter
-- The `.biospec/` directory contains the pristine templates (do not modify)
+- The `.biospec/` directory contains:
+  - Pristine overview/orchestrator templates (do not modify)
+  - `.biospec/subtemplates/` directory with master subtemplates (do not modify)
+- Granular structure benefits:
+  - Individual intents, datasets, and analyses can be versioned separately
+  - Easier to review specific components in pull requests
+  - Better organization and maintainability
+  - Clear separation of concerns
+- Overview files (intent_overview.md, dataset_overview.md) aggregate information from granular files
+- Cross-references between files use relative paths
 - Users can run this command multiple times to regenerate from updated descriptions
 - This command focuses on initial population - refinement happens through manual editing or other commands (`/biospec.validate_fields`, `/biospec.review_intent`)
 - When in doubt, err on the side of leaving fields blank rather than guessing
+
