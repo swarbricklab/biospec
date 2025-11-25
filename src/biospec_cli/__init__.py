@@ -136,7 +136,7 @@ BANNER = """
 ╚═════╝ ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝
 """
 
-TAGLINE = "BioSpec - Structured Specifications for Computational Biology"
+TAGLINE = "BioSpec - Structured Specifications for Computational Biology Research"
 
 class StepTracker:
     """Track and render hierarchical steps without emojis, similar to Claude Code tree output.
@@ -331,7 +331,7 @@ class BannerGroup(TyperGroup):
 
 app = typer.Typer(
     name="biospec",
-    help="Setup tool for BioSpec computational biology specification projects",
+    help="Setup tool for BioSpec computational biology specifications",
     add_completion=False,
     invoke_without_command=True,
     cls=BannerGroup,
@@ -1051,7 +1051,7 @@ def init(
     steps_lines.append(f"{step_num}. Follow the typical BioSpec workflow:")
     steps_lines.append("")
     steps_lines.append("   [bold cyan]Setup[/bold cyan]")
-    steps_lines.append("   • [cyan]/biospec.setup[/cyan] - Create project/ directory and copy master templates")
+    steps_lines.append("   • [cyan]/biospec.setup[/cyan] - Create project/ directory and insert templates")
     steps_lines.append("")
     steps_lines.append("   [bold cyan]Autofill[/bold cyan]")
     steps_lines.append("   • [cyan]/biospec.autofill[/cyan] - Populate templates from your project materials")
@@ -1060,7 +1060,6 @@ def init(
     steps_lines.append("   [bold cyan]Refine[/bold cyan]")
     steps_lines.append("   • [cyan]/biospec.discuss[/cyan] - Brainstorm ideas & explore alternatives")
     steps_lines.append("   • [cyan]/biospec.review[/cyan] - Get critical feedback on your project")
-    steps_lines.append("   • [cyan]/biospec.gaps[/cyan] - Identify & resolve missing information")
     steps_lines.append("   • [cyan]/biospec.links[/cyan] - Validate cross-references between documents")
     steps_lines.append("")
     steps_lines.append("   [bold cyan]Edit[/bold cyan]")
@@ -1077,7 +1076,6 @@ def init(
     additional_lines = [
         "[bold]Additional Resources[/bold]",
         "",
-        "• View all commands: [cyan]/biospec.help[/cyan]",
         "• See the README for detailed documentation",
         ""
     ]
