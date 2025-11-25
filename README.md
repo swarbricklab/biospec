@@ -107,14 +107,15 @@ BioSpec is designed for an iterative workflow. Start with a template skeleton, p
 
 4.  **Refine**:
 
-Autofill provides a starting point. We recommend iterating on the outputs manually or using the commands below. 
+    Autofill provides a starting point. We recommend iterating on the outputs manually or using the commands below.
+
     *   **`/biospec.discuss`** — Brainstorm ideas or explore alternatives for specific components. Use this as a sounding board for open-ended discussion.
         - *Example*: "What alternative analyses could I run considering my available data?"
         - *Example*: "Help me think through possible confounders in my analysis plan"
-        
+
     *   **`/biospec.review`** — Receive critical, structured peer review on specific aspects of your project.
-        - *Example*: "Review the hypothesis and success criteria in intent-1. Are they specific enough? 
-        
+        - *Example*: "Review the hypothesis and success criteria in intent-1. Are they specific enough?"
+
     *   **`/biospec.edit`** — Make targeted edits to specific fields. The agent proposes changes for your approval before applying them.
         - *Example*: "I've settled on my hypotheses for the ligand-receptor analysis, can you add these to intent-2?" (attach your notes or text)
         - *Example*: "I've been given GPU access and 500GB storage. Update my resources file and move deep learning approaches into scope in the project overview."
@@ -153,9 +154,9 @@ All BioSpec commands use a custom agent with restricted tool usage. This design 
 ### Core Templates
 
 The templates follow three design principles:
-1. Granularity: Overview templates for summaries, and specific templates for detailed components.
-2. Atomicity: Minimize repetition.
-3. Sufficiency: Capture essential project details with minimal fields.
+1. **Granularity**: Overview templates for summaries, and specific templates for detailed components.
+2. **Atomicity**: Minimize repetition.
+3. **Sufficiency**: Capture essential project details with minimal fields.
 
 Currently, the templates are:
 
