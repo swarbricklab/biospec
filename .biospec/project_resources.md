@@ -15,8 +15,8 @@ last_updated: YYYY-MM-DD
 ## Computational Resources
 
 ### Hardware Specifications
-- **CPU**: <!-- E.g., 8 cores; variable --->
-- **RAM**: <!-- E.g., 32GB; variable --->
+- **CPU**: <!-- E.g., 8 cores; variable -->
+- **RAM**: <!-- E.g., 32GB; variable -->
 - **GPU**: <!-- Yes/No/Optional | Model: -->
 - **Operating System**: 
 - **Environment**: <!-- local | HPC | cloud | hybrid -->
@@ -34,7 +34,7 @@ last_updated: YYYY-MM-DD
 ### Code Management
 - **Repository Type**: <!-- git | svn | other -->
 - **Repository Name**: 
-- **Repository Location**: <!-- Should match project_overview.md --->
+- **Repository Location**: <!-- Should match project_overview.md -->
 
 ### Environment Management
 - **Container Preference**: <!-- Docker | Singularity | Conda | None -->
