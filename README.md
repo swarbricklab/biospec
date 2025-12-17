@@ -104,6 +104,7 @@ BioSpec is designed for an iterative workflow. Start with a template skeleton, p
 - Text and markdown files are preferred for `autofill`. As mentioned above, we recommend `markitdown` for easily creating markdown files from your existing materials.
 - The agent only edits fields when confident, though reliability depends on the model.
 - This process may take a few minutes.
+> **A note on attaching scripts**: If your project contains many scripts, the assistant may not read them all or may overfocus on a subset. Consider asking the assistant to summarize related scripts in batches (e.g., folder-by-folder) into markdown files first, review these summaries for accuracy, then use them as inputs to `/biospec.autofill`.  
 
 4.  **Refine**:
 
