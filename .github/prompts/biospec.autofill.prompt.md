@@ -14,7 +14,7 @@ $ARGUMENTS
 
 Your task is to extract project details and fill out only relevant, unambiguous fields in BioSpec templates. 
 
-The text the user typed or attached after `/biospec.autofill` is optional and may contain project artefacts. The user may also note what categories of information they expect each resource to contain, or specify a particular project or cohort to focus on. **Pay strict attention to these scoping instructions.** If the user specifies a focus, ignore information related to other projects or cohorts found in the documents. If no path or input is provided, scan the current repository for project artefacts according to the strategy below.
+The text the user typed or attached after `/biospec.autofill` is optional and may contain project artefacts. The user may also note what categories of information they expect each resource to contain, or specify a particular project or cohort to focus on. **Pay strict attention to these scoping instructions.** If the user specifies a focus, ignore information related to other projects or cohorts found in the documents. If no path or input is provided, it is possible that they have attached project materials. If you are certain no material has been provided, scan the current repository for project artefacts according to the strategy below.
 
 ## Workflow Overview
 
@@ -47,8 +47,10 @@ If they do not exist, stop and inform the user that they must run the setup comm
 
 ### ☑️ Checklist Item 2: Understand Scope and Sources
 
-- **If user provided files/text**: Parse provided content directly (skip repository scan)
-- **If no input provided**: Confirm with user whether to scan repository (yes/no)
+- **If user provided text or file paths**: Parse provided content directly (skip repository scan)
+- **If user attached files (visible in context)**: Parse attachments directly (skip repository scan)
+- **If neither text, paths, nor attachments provided**: Ask user:
+  "No project materials were provided. Would you like me to scan the repository for documentation? (yes/no)"
   - If user says 'no': Stop and recommend they explicitly supply project artefacts
   - If user says 'yes': Proceed with repository scanning strategy
 
@@ -61,7 +63,12 @@ If the user attached files, check their file formats. If you cannot open or read
 - Do NOT assume or infer any information. Only record high confidence, unambiguous information. 
 - Do NOT invent or create new fields in the BioSpec docs. 
 - Remain faithful to provided template and field descriptions.
-- Where a field contains content, prefer to edit or append rather than overwrite.
+
+**When a field already contains content**:
+1. If existing content is a placeholder (e.g., "TBD", "To be determined"): Replace it
+2. If existing content is partial but accurate: Append new details, preserving original
+3. If existing content conflicts with new information: Add new info with a note like "[From source X:]" and flag for user review
+4. Never delete existing content unless it's clearly placeholder text
 
 ### Critical: Distinguishing Reference from Implementation
 
@@ -177,6 +184,8 @@ docs/{index,project_overview,README}*
 
 **Checklist Item 4: Populate `project/project_overview.md`**
 
+Your goal is to add detail to the high-level project overview. It is possible that some fields are already populated; prefer to edit or append rather than overwrite.
+
 For each project artefact provided or found:
 1. Parse structure to identify document type and its headers
 2. Extract high-confidence information for:
@@ -196,12 +205,17 @@ Mark as completed when `project_overview.md` is populated.
 
 ### ☑️ Phase 2: Identify and Create Component Files
 
+**Naming convention for component files**:
+- Use sequential numbering starting from 1: `intent-1.md`, `intent-2.md`
+- Check existing files to find the next available number
+
 **Checklist Item 5: Identify and Create Intent Files**
 
 Scan for *all* distinct research questions, aims, or goals **that the current project explicitly states it will address**. 
 
 For *each* distinct intent found:
-- Create `project/intents/intent-{n}.md` using the template from `.biospec/subtemplates/intent.md`
+- Check if it is already represented in an existing `intent-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
+- If it is not represented, create `project/intents/intent-{n}.md` using the template from `.biospec/subtemplates/intent.md`
 - Fill out: Type, Statement, Priority, Hypotheses (if applicable), Expected Outcomes, Success Criteria
 - Link to related datasets and analyses (even if not yet created)
 
@@ -216,7 +230,12 @@ Mark as completed when all intent files are created.
 Scan for *all* distinct datasets or cohorts **that will be used in the current project**.
 
 For *each* dataset or cohort:
-- Create `project/datasets/dataset-{n}.md` using the template from `.biospec/subtemplates/dataset.md`
+- Check if it is already represented in an existing `dataset-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
+- If it is not represented, create `project/datasets/dataset-{n}.md` using the template from `.biospec/subtemplates/dataset.md`
+- Follow this three-check system:
+   1. The integration check: "Will these modalities be loaded into a single Python/R object (e.g., Anndata, Seurat) for analysis?" Yes: Keep them together (e.g., CITE-seq, Multiome). No: Split them (e.g., Visium + scRNA-seq).
+   2. The cohort check: "Are these samples analyzed as a single biological unit, or are they distinct study phases (e.g. discovery and validation cohort)?" Yes: Keep them together. No: Split them.
+   3. The governance check: "Does the entire dataset share the same access permissions?" Yes: Keep them together. No: Split them.
 - Fill out: Data Types, Sample Information, Metadata Requirements, Access, Citation
 - Link to related intents and analyses
 
@@ -231,7 +250,8 @@ Mark as completed when all dataset files are created.
 Scan for *all* distinct computational analyses or objectives **that the current project will perform**.
 
 For *each* analysis:
-- Create `project/analyses/analysis-{n}.md` using the template from `.biospec/subtemplates/analysis.md`
+- Check if it is already represented in an existing `analysis-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
+- If it is not represented, create `project/analyses/analysis-{n}.md` using the template from `.biospec/subtemplates/analysis.md`
 - Fill out: Description, Priority, Methods & Tools, Expected Outputs, Success Criteria
 - Link to related intents and datasets
 - **Conservative approach**: Only populate the "Tools/Packages" field if specific tools are explicitly mentioned as being used in the current project, not just referenced
@@ -432,11 +452,12 @@ Ask the user to choose one of the following:
    - Ask the user: "Would you like to create a new branch for these changes? If yes, what should it be named?" (suggest: `biospec-autofill` or `populate-templates`)
    - If yes and user provides a name:
      - Use `mcp_github_create_branch` to create the branch on GitHub
-     - **IMPORTANT**: After creating the branch remotely, you MUST fetch it before checking out:
+     - **CRITICAL**: After creating a branch via GitHub API, you MUST run:
        ```bash
-       git fetch origin <branch-name> && git checkout -b <branch-name> origin/<branch-name>
+       git fetch origin <branch-name>
+       git checkout <branch-name>
        ```
-     - This avoids the "pathspec did not match any file(s)" error that occurs when trying to checkout a branch that only exists remotely
+       The branch exists only on the remote until fetched. `git checkout` alone will fail.
    - If the branch already exists, fetch and checkout:
        ```bash
        git fetch origin <branch-name> && git checkout -b <branch-name> origin/<branch-name>

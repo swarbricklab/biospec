@@ -1,12 +1,12 @@
 ---
 template_name: Computational Task/Analysis
 analysis_id: {n}
-schema_version: 0.0
+schema_version: 0.1.1
 last_updated: YYYY-MM-DD
 ---
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](../project_overview.md) | [Intent Overview](../intent_overview.md) | [Dataset Overview](../dataset_overview.md) | [Analysis Overview](../analysis_overview.md) | [Dependencies](../dependencies.md) | [Project Resources](../project_resources.md) | [Status](../status.md)
 
 ---
 
@@ -15,6 +15,12 @@ last_updated: YYYY-MM-DD
 
 ## Description
 <!-- Summarize the analysis -->
+
+## Input Data
+<!-- Specific data inputs for this analysis -->
+- **Primary input**: 
+- **Subset/filters**: 
+- **Required preprocessing**: 
 
 ## Priority
 **Priority Level**: Must Have | Nice to Have | Future Consideration
@@ -37,9 +43,12 @@ last_updated: YYYY-MM-DD
 **Intermediate Files**:
 - 
 
-**Visualizations**:
+**Visualizations to Create**:
 - 
 
+## Assumptions & Limitations
+<!-- Key assumptions underlying this analysis and known limitations -->
+- 
 
 ## Success Criteria
 <!-- How will we know this analysis is complete? -->
@@ -47,6 +56,9 @@ last_updated: YYYY-MM-DD
 **Criteria**:
 - 
 
+## Validation Strategy
+<!-- How will results be validated? E.g., cross-validation, comparison to known results, biological plausibility checks -->
+- 
 
 ## Related Components
 <!-- Links to related components -->

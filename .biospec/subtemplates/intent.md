@@ -2,12 +2,12 @@
 template_name: Intent Document
 intent_id: {n}
 intent_type: question | aim | goal
-schema_version: 0.0
+schema_version: 0.1.1
 last_updated: YYYY-MM-DD
 ---
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](../project_overview.md) | [Intent Overview](../intent_overview.md) | [Dataset Overview](../dataset_overview.md) | [Analysis Overview](../analysis_overview.md) | [Dependencies](../dependencies.md) | [Project Resources](../project_resources.md) | [Status](../status.md)
 
 ---
 
@@ -26,9 +26,9 @@ last_updated: YYYY-MM-DD
 <!-- Only fill this section if there are testable hypotheses associated with this intent -->
 - **Does this intent have associated hypotheses?**: Yes | No
 
-<!-- Repeat this block for each hypothesis present, replacing {n} with a number -->
-### Hypothesis {n} Details
-- **Short ID**: H{n}-{descriptor}
+<!-- Repeat this block for each hypothesis present, replacing {h} with a number (1, 2, 3...) -->
+### Hypothesis {h} Details
+- **Short ID**: H{h}-{descriptor}
 - **Statement**: 
 - **Rationale**: 
 - **Null Hypothesis**: 

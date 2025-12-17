@@ -1,57 +1,69 @@
 ---
 template_name: Dataset
 dataset_id: {n}
-schema_version: 0.0
+schema_version: 0.1.1
 last_updated: YYYY-MM-DD
 ---
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](../project_overview.md) | [Intent Overview](../intent_overview.md) | [Dataset Overview](../dataset_overview.md) | [Analysis Overview](../analysis_overview.md) | [Dependencies](../dependencies.md) | [Project Resources](../project_resources.md) | [Status](../status.md)
 
 ---
 
-# Dataset {n}: {Dataset Name/Identifier}
+# Dataset {n}: {Short Descriptor}
+<!-- This template represents a single dataset -->
 
-<!-- This template represents a single dataset or cohort -->
+## Extended Name
 
-## Data Types
-**Primary Data Type (And format)**: 
-<!-- Example: scRNA-seq expression matrix (Anndata) -->
+## Dataset-Level Context
 
-**Supplementary Data Types (And formats)**: 
-<!-- Cell metadata, spatial coordinates, etc. -->
+**Source Cohort(s)**: <!-- Summarise the cohorts from which this dataset was obtained -->
 
-**Degree of Processing Applied**: Primary | Secondary | Tertiary
-
-**Additional or Reference Data Required**: 
+**Sample Selection Logic**: <!-- Criteria for selecting or excluding particular samples from a dataset for analysis -->
 
 **Access**: Public | In-house
 
-**Citation**: 
+**Citation**:
 
+## Modalities
+<!-- This dataset may include multiple modalities.
+Use one table row and one detail subsection per modality.
+We assume one sample sheet per modality (it's okay if this it not the case). -->
+
+| Modality | Format | Data Location | Sample Sheet Location | Processing Stage |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
+
+## Modality Details
+<!-- Duplicate this section for each modality -->
+
+### Modality {m}: {Short Descriptor}
+
+**Modality and Format**:
+<!-- Example: scRNA-seq expression matrix (Anndata) -->
+
+**Data Location**:
+
+**Sample Sheet Location**: <!-- Relative path or URL to a samplesheet or document containing unique identifiers for the samples included -->
+
+**Processing Stage**: <!-- E.g. Raw, aligned, count matrix -->
+
+**Supplementary Data Types (and formats)**:
+<!-- Cell metadata, spatial coordinates, etc. -->
+
+**Additional or Reference Data Required**:
 
 ## Sample Information
-**Total Samples**:
 
-**Batch Information**: 
+**Total Samples**: <!-- Count of unique biological units represented in this dataset (e.g., participants or biospecimens) -->
 
+**Batch Variables**: 
 
-## Metadata Requirements
-<!-- Document metadata to find or derive -->
+**Identifier Convention**: <!-- E.g., sample IDs follow pattern: {cohort}_{subject}_{sample} -->
+
+## Metadata Needs (+/- Availability)
+<!-- In addition to the primary data, what other information is available/needed per sample (typically from the modality sample sheet)? E.g., disease status, age, medical history. -->
 - 
-
-
-## Additional Information
-<!-- Other free text info about the dataset -->
-
-
-## Data Status
-### QC Tasks Completed
-- 
-
-### QC Tasks to Complete
-- 
-
 
 ## Related Components
 <!-- Links to related components -->
@@ -66,7 +78,5 @@ last_updated: YYYY-MM-DD
 
 **Back to Overview**: [Dataset Overview](../dataset_overview.md)
 
-
 ## Notes
-<!-- Any additional notes or considerations -->
-
+<!-- Any additional free text notes or considerations -->

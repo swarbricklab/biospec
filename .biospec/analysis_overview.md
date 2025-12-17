@@ -1,6 +1,6 @@
 ---
 template_name: Analysis Overview
-schema_version: 0.0
+schema_version: 0.1.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -9,7 +9,7 @@ last_updated: YYYY-MM-DD
 <!-- This file orchestrates and aggregates all computational analyses for the project -->
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Dependencies](dependencies.md) | [Project Resources](project_resources.md) | [Status](status.md)
 
 ---
 
@@ -28,13 +28,15 @@ last_updated: YYYY-MM-DD
 <!-- Links to future analysis files -->
 - [Analysis {n}: {Descriptor}](analyses/analysis-3.md)
 
+<!-- Add new analyses by creating analysis-{n}.md in analyses/ and adding a row to the appropriate priority section above -->
 
 ## Summary Table
 <!-- Aggregated view of all analyses -->
+<!-- Status values: Planned | In Progress | Blocked | Complete | Deferred -->
 | Analysis ID | Descriptor | Priority | Addresses Intents | Uses Datasets | Status |
 |-------------|------------|----------|-------------------|---------------|--------|
-| analysis-{n}  |  | Must Have |  |  |  |
-| analysis-{n}  |  | Nice to Have |  |  |  |
+| [Analysis 1: {Descriptor}](analyses/analysis-1.md)  |  | Must Have |  |  |  |
+| [Analysis 2: {Descriptor}](analyses/analysis-2.md)  |  | Nice to Have |  |  |  |
 
 
 ## Overall Analysis Strategy
