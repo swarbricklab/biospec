@@ -1,6 +1,6 @@
 # BioSpec
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) ![Python](https://img.shields.io/badge/python-3.10+-blue)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) ![Python](https://img.shields.io/badge/python-3.11+-blue)
 
 ## Overview
 
@@ -104,6 +104,7 @@ BioSpec is designed for an iterative workflow. Start with a template skeleton, p
 - Text and markdown files are preferred for `autofill`. As mentioned above, we recommend `markitdown` for easily creating markdown files from your existing materials.
 - The agent only edits fields when confident, though reliability depends on the model.
 - This process may take a few minutes.
+> **A note on attaching scripts**: If your project contains many scripts, the assistant may not read them all or may overfocus on a subset. Consider asking the assistant to summarize related scripts in batches (e.g., folder-by-folder) into markdown files first, review these summaries for accuracy, then use them as inputs to `/biospec.autofill`.  
 
 4.  **Refine**:
 
@@ -139,6 +140,7 @@ BioSpec provides a suite of slash commands (prompts) to help you manage your pro
 | `/biospec.edit` | **Targeted Edits**: Makes edits to specific fields based on your instructions. |
 | `/biospec.status` | **Check Progress**: Updates `project/status.md` to reflect the completion status of your templates. |
 | `/biospec.links` | **Manage References**: Validates existing links and suggests new cross-references between intents, datasets, and analyses. |
+| `/biospec.diagram` | **Generate Diagram**: Generates a Mermaid dependency diagram visualizing relationships between intents, datasets, and analyses. |
 
 Experimental commands (Work in progress):
 
@@ -167,6 +169,7 @@ Currently, the templates are:
 | `intent_overview.md` | **Research Aims Index**: Lists all research questions/aims with a summary table and project-level milestones. |
 | `dataset_overview.md` | **Data Index**: Lists all datasets with a summary table and integration strategy. |
 | `analysis_overview.md` | **Analysis Index**: Lists all analysis objectives with priorities and dependencies. |
+| `dependencies.md` | **Dependency Graph**: Visualizes the relationships and dependencies between intents, datasets, and analyses. |
 | `status.md` | **Progress Tracker**: Tracks the completion status of all templates and fields. |
 
 ### Subtemplates (Granular Components)
@@ -203,6 +206,7 @@ project/                           # Your active project specification
 ├── intent_overview.md             # Index linking to all intents
 ├── dataset_overview.md            # Index linking to all datasets
 ├── analysis_overview.md           # Index linking to all analyses
+├── dependencies.md                # Dependency visualization
 ├── project_overview.md            # Project-level metadata
 ├── project_resources.md           # Computing resources
 └── status.md                      # Completion tracking

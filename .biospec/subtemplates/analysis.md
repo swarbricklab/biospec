@@ -1,12 +1,12 @@
 ---
 template_name: Computational Task/Analysis
 analysis_id: {n}
-schema_version: 0.0
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](../project_overview.md) | [Intent Overview](../intent_overview.md) | [Dataset Overview](../dataset_overview.md) | [Analysis Overview](../analysis_overview.md) | [Dependencies](../dependencies.md) | [Project Resources](../project_resources.md) | [Status](../status.md)
 
 ---
 
@@ -15,6 +15,12 @@ last_updated: YYYY-MM-DD
 
 ## Description
 <!-- Summarize the analysis -->
+
+## Input Data
+<!-- Specific data inputs for this analysis. For tool development: requirements, specifications, existing code to integrate with. -->
+- **Primary input**:
+- **Subset/filters**:
+- **Required preprocessing**: 
 
 ## Priority
 **Priority Level**: Must Have | Nice to Have | Future Consideration
@@ -34,12 +40,15 @@ last_updated: YYYY-MM-DD
 **Primary Outputs**:
 - 
 
-**Intermediate Files**:
+**Intermediate/Additional Files**:
 - 
 
-**Visualizations**:
+**Visualizations to Create**:
 - 
 
+## Assumptions & Limitations
+<!-- Key assumptions underlying this analysis and known limitations. E.g., assumes samples are independent, limited to human data, requires minimum sample size. -->
+- 
 
 ## Success Criteria
 <!-- How will we know this analysis is complete? -->
@@ -47,6 +56,9 @@ last_updated: YYYY-MM-DD
 **Criteria**:
 - 
 
+## Validation Strategy
+<!-- How will results be validated? For analysis: cross-validation, comparison to known results, biological plausibility checks. For tool development: unit tests, integration tests, benchmarks, user acceptance testing. -->
+- 
 
 ## Related Components
 <!-- Links to related components -->
@@ -56,7 +68,7 @@ last_updated: YYYY-MM-DD
 - [Intent {n}: {Short Identifier}](../intents/intent-{n}.md)
 
 **Uses Datasets**:
-<!-- List dataset IDs this analysis operates on -->
+<!-- List dataset IDs this analysis operates on. For tool development tasks without data dependencies, this may be N/A. -->
 - [Dataset {n}: {Name}](../datasets/dataset-{n}.md)
 
 **Back to Overview**: [Analysis Overview](../analysis_overview.md)

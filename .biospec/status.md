@@ -1,15 +1,15 @@
 ---
 template_name: Project Status
-schema_version: 0.2
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 
-# Project Status
+# Documentation Status
 
 <!-- Track completion status of BioSpec templates and fields -->
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Dependencies](dependencies.md) | [Project Resources](project_resources.md) | [Status](status.md)
 
 ---
 
@@ -72,15 +72,13 @@ You can update status in two ways:
 
 | Field / Section                     | Status | Notes                          |
 |-------------------------------------|--------|---------------------------------|
-| Project title & short name          | [ ]    |                                 |
-| Project summary / abstract          | [ ]    |                                 |
-| Biological / clinical context       | [ ]    |                                 |
-| Rationale and significance          | [ ]    |                                 |
-| Scope and boundaries                | [ ]    |                                 |
-| Prior related work / references     | [ ]    |                                 |
-| Key stakeholders & roles            | [ ]    |                                 |
-| Expected outputs / deliverables     | [ ]    |                                 |
-| Timeline / key milestones           | [ ]    |                                 |
+| Basic information (title, type, dates, team) | [ ]    |                                 |
+| Brief summary                       | [ ]    |                                 |
+| Keywords                            | [ ]    |                                 |
+| Scientific context (biological system, scale, processes) | [ ]    |                                 |
+| Expected project outputs            | [ ]    |                                 |
+| Project scope (in/out of scope)     | [ ]    |                                 |
+| Prior work & inspiration            | [ ]    |                                 |
 
 ---
 
@@ -88,13 +86,13 @@ You can update status in two ways:
 
 | Field / Section                     | Status | Notes                          |
 |-------------------------------------|--------|---------------------------------|
-| Computing environment overview      | [ ]    |                                 |
-| Software & libraries                | [ ]    |                                 |
-| Data storage & access               | [ ]    |                                 |
-| Security & compliance requirements  | [ ]    |                                 |
+| Hardware specifications             | [ ]    |                                 |
+| HPC/Cloud details                   | [ ]    |                                 |
+| Data storage                        | [ ]    |                                 |
+| Version control (code management)   | [ ]    |                                 |
+| Environment management              | [ ]    |                                 |
+| Software stack                      | [ ]    |                                 |
 | Standard operating procedures (SOPs)| [ ]    |                                 |
-| Version control & collaboration     | [ ]    |                                 |
-| External services / APIs            | [ ]    |                                 |
 
 ---
 
@@ -102,19 +100,17 @@ You can update status in two ways:
 
 | Field / Section                         | Status | Notes                          |
 |-----------------------------------------|--------|---------------------------------|
-| Overall research question(s)            | [ ]    |                                 |
-| High-level aims / intents list          | [ ]    |                                 |
-| Alignment with project scope            | [ ]    |                                 |
-| Prioritisation of intents               | [ ]    |                                 |
-| Expected outputs per intent             | [ ]    |                                 |
+| Intents list (links to files)           | [ ]    |                                 |
+| Summary table                           | [ ]    |                                 |
+| Dependencies                            | [ ]    |                                 |
 
 #### Per-Intent Status (files under `intents/`)
 
 | Intent ID / File              | Status | Notes                  |
 |------------------------------|--------|------------------------|
-| `intents/intent_001.md`      | [ ]    |                        |
-| `intents/intent_002.md`      | [ ]    |                        |
-| …                            |                    |                        |
+| `intents/intent-1.md`        | [ ]    |                        |
+| `intents/intent-2.md`        | [ ]    |                        |
+| …                            |        |                        |
 
 ---
 
@@ -122,20 +118,19 @@ You can update status in two ways:
 
 | Field / Section                          | Status | Notes                          |
 |------------------------------------------|--------|---------------------------------|
-| Dataset list & identifiers               | [ ]    |                                 |
-| Cohorts / populations                    | [ ]    |                                 |
-| Data types & levels (raw/processed)      | [ ]    |                                 |
-| Sources / acquisition methods            | [ ]    |                                 |
-| Data access / permissions                | [ ]    |                                 |
-| High-level QC / preprocessing strategy   | [ ]    |                                 |
+| Datasets list (links to files)           | [ ]    |                                 |
+| Summary table                            | [ ]    |                                 |
+| Data integration plan                    | [ ]    |                                 |
+| Cross-dataset considerations             | [ ]    |                                 |
+| Data sharing & publication               | [ ]    |                                 |
 
 #### Per-Dataset Status (files under `datasets/`)
 
 | Dataset ID / File              | Status | Notes                  |
 |--------------------------------|--------|------------------------|
-| `datasets/dataset_001.md`      | [ ]    |                        |
-| `datasets/dataset_002.md`      | [ ]    |                        |
-| …                              |                    |                        |
+| `datasets/dataset-1.md`        | [ ]    |                        |
+| `datasets/dataset-2.md`        | [ ]    |                        |
+| …                              |        |                        |
 
 ---
 
@@ -143,20 +138,18 @@ You can update status in two ways:
 
 | Field / Section                          | Status | Notes                          |
 |------------------------------------------|--------|---------------------------------|
-| Analysis objectives                      | [ ]    |                                 |
-| Analysis modules / pipelines             | [ ]    |                                 |
-| Statistical / ML methods                 | [ ]    |                                 |
-| Key contrasts / comparisons              | [ ]    |                                 |
-| Validation & robustness checks           | [ ]    |                                 |
-| Planned outputs (figures/tables/reports) | [ ]    |                                 |
+| Analyses by priority (Must Have / Nice to Have / Future) | [ ]    |                                 |
+| Summary table                            | [ ]    |                                 |
+| Analysis pipeline                        | [ ]    |                                 |
+| Cross-analysis dependencies              | [ ]    |                                 |
 
 #### Per-Analysis Status (files under `analyses/`)
 
 | Analysis ID / File             | Status | Notes                  |
 |--------------------------------|--------|------------------------|
-| `analyses/analysis_001.md`     | [ ]    |                        |
-| `analyses/analysis_002.md`     | [ ]    |                        |
-| …                              |                    |                        |
+| `analyses/analysis-1.md`       | [ ]    |                        |
+| `analyses/analysis-2.md`       | [ ]    |                        |
+| …                              |        |                        |
 
 ---
 

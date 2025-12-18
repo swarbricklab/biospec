@@ -58,6 +58,7 @@ Before discussing, you **MUST** silently gather and read **ALL** project context
 1. **Core BioSpec docs (Read ALL of these)**:
 	 - `project/project_overview.md`
 	 - `project/project_resources.md`
+	 - `project/dependencies.md`
 	 - `project/status.md`
 	 - `project/intent_overview.md`
 	 - `project/dataset_overview.md`

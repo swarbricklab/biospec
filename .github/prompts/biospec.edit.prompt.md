@@ -13,7 +13,7 @@ $ARGUMENTS
 You **MUST** consider the user input before proceeding (if not empty).
 
 User input for this command typically includes:
-- The **target template** (e.g. `project_overview`, a specific intent/dataset/analysis file), and
+- The **target template** (e.g. `project_overview`, `project_resources`, `dependencies`, `status`, or a specific `intent-1.md` / `dataset-1.md` / `analysis-1.md` file), and
 - One or more **fields** within that template the user wants to update, and
 - Free-text description and/or attached resources (e.g. protocol text, notes, prior docs) to guide the update.
 
@@ -52,31 +52,33 @@ Mark each task as `in-progress` before starting work, and `completed` immediatel
 Before making any edits:
 
 1. **Confirm BioSpec has been set up**:
-	 - Check for the presence of the `project/` directory and core singleton templates:
-		 - `project/project_overview.md`
-		 - `project/project_resources.md`
-		 - `project/status.md`
-		 - `project/intent_overview.md`
-		 - `project/dataset_overview.md`
-		 - `project/analysis_overview.md`
+    - Check for the presence of the `project/` directory and core singleton templates:
+       - `project/project_overview.md`
+       - `project/project_resources.md`
+       - `project/status.md`
+       - `project/intent_overview.md`
+       - `project/dataset_overview.md`
+       - `project/analysis_overview.md`
+       - `project/dependencies.md`
 	 - If these are missing, **do not proceed with edits**. Inform the user that they must run the setup command first (e.g. `/biospec.setup`) to initialize BioSpec docs.
 
 2. **Locate the target template**:
-	 - Map the user’s template reference (e.g. "project overview", "intent INT-01", "dataset: RNA-seq", "analysis: survival model") to a concrete file path under `project/`.
+    - Map the user’s template reference (e.g. "project overview", "intent 1", "dataset 2", "analysis 3", "dependencies diagram") to a concrete file path under `project/`.
 	 - Typical locations:
 		 - Project-level singletons: `project/project_overview.md`, `project/project_resources.md`, etc.
+       - Dependencies diagram: `project/dependencies.md`
+       - Status tracker: `project/status.md`
 		 - Intents: `project/intents/*.md`
 		 - Datasets: `project/datasets/*.md`
 		 - Analyses: `project/analyses/*.md`
 	 - If you cannot confidently identify the target file, ask the user to clarify and **do not guess**.
 	 - **Verify suitability**: Briefly check if the user's input is actually better suited for a *different* template type (e.g. analysis details sent to an intent file). If so, flag this for the Proposal phase.
-
 3. **Check that requested fields exist in the target template**:
 	 - Parse the target markdown file and identify headings/sections that correspond to the user’s requested fields (e.g. "Research question", "Hypothesis", "Primary dataset", "QC plan", "Milestones").
 	 - Exact name matches are **not** required; approximate, high-confidence matches (e.g. "research aims" → "Research questions and aims") are acceptable.
 	 - If a requested field cannot be mapped with high confidence to an existing section, either:
 		 - Ask a brief clarifying question, or
-		 - Propose candidate section names the user could create manually, but **do not create new sections on your own** unless explicitly instructed.
+          - Propose candidate section names the user could create manually, but **do not create new sections on your own** unless explicitly instructed.
 
 If any of these preflight checks fail, explain the issue and stop before editing files.
 
@@ -94,7 +96,7 @@ When preflight checks pass and the target field(s) are identified, apply these p
 	- Integrate new information **without discarding useful existing detail** unless the user clearly indicates they want to replace it.
 	- When replacing content, ensure that important qualifiers (e.g. cohort sizes, inclusion/exclusion criteria, assay platforms, limitations) are not lost unless explicitly superseded.
 - **Explicit assumptions**:
-	- If you must make minor interpretive assumptions (e.g. mapping user shorthand to existing terminology), note these assumptions briefly in your reasoning and keep the edit conservative.
+   - If you must make minor interpretive assumptions (e.g. mapping user shorthand to existing terminology), note these assumptions briefly in your reasoning and keep the edit conservative.
 - **Optimal Placement**:
 	- Critically evaluate whether the new information belongs in the requested template or is better suited for a related component (e.g. specific computational parameters in an Intent might belong in an Analysis; sample processing details might belong in a Dataset).
 	- **Do not** dump structured information into generic "Notes" or "Description" fields of the wrong template just to include it.
@@ -200,7 +202,7 @@ Always align with BioSpec’s core rules:
 After performing edits (i.e. after user approval):
 
 1. **Summary of Changes**:
-   - Provide a concise summary of **which files and fields** were updated (e.g. "Updated Hypothesis and Objectives in `project/intents/INT-01.md`").
+   - Provide a concise summary of **which files and fields** were updated (e.g. "Updated Hypotheses and Success Criteria in `project/intents/intent-1.md`").
    - For each updated field, briefly explain the nature of the change (e.g. "clarified hypothesis to specify endpoints and cohort", "added explicit batch effect consideration to dataset limitations").
 
 2. **Review Reminder**:

@@ -1,6 +1,6 @@
 ---
 template_name: Dataset Overview
-schema_version: 0.0
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 
@@ -9,7 +9,7 @@ last_updated: YYYY-MM-DD
 <!-- This file orchestrates and aggregates all datasets/cohorts for the project -->
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Dependencies](dependencies.md) | [Project Resources](project_resources.md) | [Status](status.md)
 
 ---
 
@@ -17,22 +17,41 @@ last_updated: YYYY-MM-DD
 <!-- Links to individual dataset files -->
 
 ### List of Datasets
-1. [Dataset 1: {Name/Identifier}](datasets/dataset-1.md)
-2. [Dataset 2: {Name/Identifier}](datasets/dataset-2.md)
+1. [Dataset 1: {Short Descriptor}](datasets/dataset-1.md)
+2. [Dataset 2: {Short Descriptor}](datasets/dataset-2.md)
+<!-- Add new datasets by creating dataset-{n}.md in datasets/ and adding a row to the table below -->
 
 ### Summary Table
-<!-- Aggregated view of all datasets -->
-| Dataset ID | Name | Source | Access | Data Type | Format | Size | Processing Level | Update Frequency |
-|------------|------|--------|--------|-----------|--------|------|------------------|------------------|
-| dataset-1  |  | Internal/Public | Public/In-house |  |  |  | Primary/Secondary/Tertiary | Static/Dynamic |
-| dataset-2  |  | Internal/Public | Public/In-house |  |  |  | Primary/Secondary/Tertiary | Static/Dynamic |
+<!--
+Aggregated view of all atomic datasets.
+Values should be consistent with the corresponding dataset file (see subtemplate: `.biospec/subtemplates/dataset.md`).
+
+Column mapping guidance:
+- Dataset: link text should match the dataset title (`Dataset {n}: {Short Descriptor}`), where possible.
+- Source Cohort(s): from **Source Cohort(s)**.
+- Modalities: comma-separated list from the **Modalities** table (Modality column).
+- Total Samples: from **Total Samples**.
+- Access: from **Access** (Public | In-house).
+- Processing Stage (Summary): summarize the per-modality processing stages; if multiple, use `Mixed: ...`.
+-->
+
+| Dataset | Source Cohort(s) | Modalities | Total Samples | Access | Processing Stage (Summary) |
+| :--- | :--- | :--- | ---: | :--- | :--- |
+| [Dataset 1: {Short Descriptor}](datasets/dataset-1.md) | {Cohort(s)} | {Modality 1, Modality 2} | {N} | {Public/In-house} | {Raw/Aligned/Count matrix/Processed/Mixed: ...} |
+| [Dataset 2: {Short Descriptor}](datasets/dataset-2.md) | {Cohort(s)} | {Modality 1} | {N} | {Public/In-house} | {Raw/Aligned/Count matrix/Processed} |
 
 
-## Overall Data Strategy
+## Global Data Strategy
 <!-- High-level data management considerations across all datasets -->
 
 ### Data Integration Plan
 <!-- How will multiple datasets be integrated or combined? -->
+<!--
+Capture decisions that affect multiple datasets 
+Examples:
+- Which atomic datasets are co-analysed vs kept separate?
+- What is the integration unit (participant, sample, cell)?
+-->
 - 
 
 ### Cross-Dataset Considerations
@@ -41,7 +60,4 @@ last_updated: YYYY-MM-DD
 
 ### Data Sharing & Publication
 <!-- Overall strategy for data sharing across datasets -->
-- 
-
-
-
+-

@@ -32,6 +32,7 @@ MASTER_TEMPLATES=(
     ".biospec/intent_overview.md"
     ".biospec/dataset_overview.md"
     ".biospec/analysis_overview.md"
+    ".biospec/dependencies.md"
     ".biospec/project_resources.md"
     ".biospec/status.md"
     ".biospec/subtemplates/intent.md"

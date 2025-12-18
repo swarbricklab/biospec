@@ -55,6 +55,7 @@ Before reviewing, you **MUST** silently gather and review **ALL** project contex
 1. **Core BioSpec docs (Read ALL of these)**:
 	 - `project/project_overview.md`
 	 - `project/project_resources.md`
+	 - `project/dependencies.md`
 	 - `project/status.md`
 	 - `project/intent_overview.md`
 	 - `project/dataset_overview.md`

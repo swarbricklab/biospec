@@ -2,12 +2,12 @@
 template_name: Intent Document
 intent_id: {n}
 intent_type: question | aim | goal
-schema_version: 0.0
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 
 ---
-**Navigation**: [Project Overview](project_overview.md) | [Intent Overview](intent_overview.md) | [Dataset Overview](dataset_overview.md) | [Analysis Overview](analysis_overview.md) | [Project Resources](project_resources.md) | [Status](status.md)
+**Navigation**: [Project Overview](../project_overview.md) | [Intent Overview](../intent_overview.md) | [Dataset Overview](../dataset_overview.md) | [Analysis Overview](../analysis_overview.md) | [Dependencies](../dependencies.md) | [Project Resources](../project_resources.md) | [Status](../status.md)
 
 ---
 
@@ -22,26 +22,38 @@ last_updated: YYYY-MM-DD
 
 **Priority**: High | Medium | Low
 
-## Associated Hypotheses (if applicable)
-<!-- Only fill this section if there are testable hypotheses associated with this intent -->
+<details>
+<summary>Associated Hypotheses (expand if this intent involves testable hypotheses)</summary>
+
+<!--
+Only fill this section if there are testable hypotheses associated with this intent.
+For exploratory intents or tool development goals, skip this section entirely.
+-->
+
 - **Does this intent have associated hypotheses?**: Yes | No
 
-<!-- Repeat this block for each hypothesis present, replacing {n} with a number -->
-### Hypothesis {n} Details
-- **Short ID**: H{n}-{descriptor}
-- **Statement**: 
-- **Rationale**: 
-- **Null Hypothesis**: 
-- **Alternative Hypothesis**: 
+<!-- Repeat this block for each hypothesis present, replacing {h} with a number (1, 2, 3...) -->
+### Hypothesis {h} Details
+- **Short ID**: H{h}-{descriptor}
+- **Statement**:
+- **Rationale**: <!-- Why do you expect this hypothesis to be true? -->
+- **Null Hypothesis**: <!-- The default assumption to be tested against -->
+- **Alternative Hypothesis**: <!-- What the data would support if null is rejected -->
 
-## Expected Outcomes
+</details> 
+
+<details>
+<summary>Expected Outcomes (expand to specify deliverables)</summary>
+
 <!-- What outcomes are expected from addressing this intent? -->
 
 <!-- Repeat this block for each outcome, replacing {n} with a number -->
 **Outcome {n}**:
-- **Statement**: 
-- **How it will be measured**:
-- **How it will be communicated/visualised**:
+- **Statement**:
+- **How it will be measured**: <!-- How will this outcome be measured or verified? For research: statistical tests, metrics. For tool development: tests passing, feature complete, user acceptance. -->
+- **How it will be communicated/visualised**: <!-- How will this outcome be communicated? For research: figures, tables, reports. For tool development: documentation, demos, changelogs. -->
+
+</details>
 
 
 ## Success Criteria
@@ -53,8 +65,8 @@ last_updated: YYYY-MM-DD
 ## Related Components
 <!-- Links to related components -->
 
-**Related Datasets**: 
-<!-- List dataset IDs that can address this intent -->
+**Related Datasets**:
+<!-- List dataset IDs that can address this intent. For tool development projects without data dependencies, this may be N/A. -->
 - [Dataset {n}: {Name}](../datasets/dataset-{n}.md)
 
 **Related Analyses**:

@@ -49,6 +49,7 @@ These markers appear:
 	 - `intent_overview.md`
 	 - `dataset_overview.md`
 	 - `analysis_overview.md`
+	 - `dependencies.md`
 	 - `status.md`
 
 	 If `status.md` is missing, warn the user that the status template appears not to be initialised and suggest re-running `/biospec.setup` or manually copying `.biospec/status.md` into `project/status.md`.

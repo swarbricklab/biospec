@@ -44,6 +44,7 @@ $templates = @(
     "intent_overview.md",
     "dataset_overview.md",
     "analysis_overview.md",
+    "dependencies.md",
     "project_resources.md",
     "status.md"
 )
