@@ -40,7 +40,7 @@ last_updated: YYYY-MM-DD
 **Primary Outputs**:
 - 
 
-**Intermediate Files**:
+**Intermediate/Additional Files**:
 - 
 
 **Visualizations to Create**:
