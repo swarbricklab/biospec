@@ -17,15 +17,18 @@
 BioSpec CLI - Setup tool for computational biology specification projects
 
 Usage:
-    uvx biospec-cli init <project-name>
-    uvx biospec-cli init .
-    uvx biospec-cli init --here
-
-Or install globally:
-    uv tool install biospec-cli
-    biospec init <project-name>
-    biospec init .
+    # Persistent install (recommended)
+    uv tool install biospec-cli --from git+https://github.com/swarbricklab/BioSpec.git
+    biospec init <project-directory-name>
     biospec init --here
+
+    # One-time usage (no install)
+    uvx --from git+https://github.com/swarbricklab/BioSpec.git biospec init <project-directory-name>
+    uvx --from git+https://github.com/swarbricklab/BioSpec.git biospec init --here
+
+    # Current directory
+    biospec init .
+    uvx --from git+https://github.com/swarbricklab/BioSpec.git biospec init .
 """
 
 import os
@@ -132,7 +135,7 @@ BANNER = r"""
  | __ )(_) ___ / ___| _ __   ___  ___  
  |  _ \| |/ _ \\___ \| '_ \ / _ \/ __| 
  | |_) | | (_) |___) | |_) |  __/ (__  
- |____/|_|\___/|____/| .__/ \___| \___| 
+ |____/|_|\___/|____/| .__/ \___|\___| 
                      |_|               
 """
 
@@ -188,35 +191,39 @@ class StepTracker:
                 pass
 
     def render(self):
-        tree = Tree(f"[cyan]{self.title}[/cyan]", guide_style="grey50")
+        # Tree Title: Uses the primary Bio color
+        tree = Tree(f"[spring_green3]{self.title}[/spring_green3]", guide_style="grey30")
         for step in self.steps:
             label = step["label"]
             detail_text = step["detail"].strip() if step["detail"] else ""
 
             status = step["status"]
             if status == "done":
+                # Completed: Stable Cyan
                 symbol = "[cyan]●[/cyan]"
             elif status == "pending":
+                # Pending: Dim Grey (unlit)
                 symbol = "[grey30]○[/grey30]"
             elif status == "running":
+                # Running: Bright Spring Green (active fluorescence)
                 symbol = "[spring_green1]○[/spring_green1]"
             elif status == "error":
                 symbol = "[red]●[/red]"
             elif status == "skipped":
-                symbol = "[yellow]○[/yellow]"
+                symbol = "[dim cyan]○[/dim cyan]"
             else:
                 symbol = " "
 
             if status == "pending":
                 # Entire line light gray (pending)
                 if detail_text:
-                    line = f"{symbol} [bright_black]{label} ({detail_text})[/bright_black]"
+                    line = f"{symbol} [dim]{label} ({detail_text})[/dim]"
                 else:
-                    line = f"{symbol} [bright_black]{label}[/bright_black]"
+                    line = f"{symbol} [dim]{label}[/dim]"
             else:
                 # Label white, detail (if any) light gray in parentheses
                 if detail_text:
-                    line = f"{symbol} [white]{label}[/white] [bright_black]({detail_text})[/bright_black]"
+                    line = f"{symbol} [white]{label}[/white] [dim]({detail_text})[/dim]"
                 else:
                     line = f"{symbol} [white]{label}[/white]"
 
@@ -266,12 +273,12 @@ def select_with_arrows(options: dict, prompt_text: str = "Select an option", def
     def create_selection_panel():
         """Create the selection panel with current selection highlighted."""
         table = Table.grid(padding=(0, 2))
-        table.add_column(style="cyan", justify="left", width=3)
+        table.add_column(style="spring_green1", justify="left", width=3)
         table.add_column(style="white", justify="left")
 
         for i, key in enumerate(option_keys):
             if i == selected_index:
-                table.add_row(">", f"[cyan]{key}[/cyan] [dim]({options[key]})[/dim]")
+                table.add_row(">", f"[spring_green1]{key}[/spring_green1] [dim]({options[key]})[/dim]")
             else:
                 table.add_row(" ", f"[cyan]{key}[/cyan] [dim]({options[key]})[/dim]")
 
@@ -338,16 +345,18 @@ app = typer.Typer(
 )
 
 def show_banner():
-    """Display the ASCII art banner."""
+    """Display the ASCII art banner with a fluorescence gradient."""
     banner_lines = BANNER.strip().split('\n')
+    # Bioluminescence Gradient: Deep Green -> Bright Spring -> Cyan -> Deep Blue
     colors = ["spring_green3", "spring_green1", "medium_spring_green", "cyan", "sky_blue1", "deep_sky_blue1"]
+    
     styled_banner = Text()
     for i, line in enumerate(banner_lines):
         color = colors[i % len(colors)]
-        styled_banner.append(line + "\n", style=color)
+        styled_banner.append(line + "\n", style=f"bold {color}")
 
     console.print(Align.center(styled_banner))
-    console.print(Align.center(Text(TAGLINE, style="italic bright_yellow")))
+    console.print(Align.center(Text(TAGLINE, style="italic dim cyan")))
     console.print()
 
 @app.callback()
@@ -435,7 +444,7 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> Tuple[bool, Option
         subprocess.run(["git", "add", "."], check=True, capture_output=True, text=True)
         subprocess.run(["git", "commit", "-m", "Initial commit from BioSpec template"], check=True, capture_output=True, text=True)
         if not quiet:
-            console.print("[green]OK[/green] Git repository initialized")
+            console.print("[spring_green1]OK[/spring_green1] Git repository initialized")
         return True, None
 
     except subprocess.CalledProcessError as e:
@@ -453,7 +462,7 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> Tuple[bool, Option
 
 def handle_vscode_settings(sub_item, dest_file, rel_path, verbose=False, tracker=None) -> None:
     """Handle merging or copying of .vscode/settings.json files."""
-    def log(message, color="green"):
+    def log(message, color="spring_green1"):
         if verbose and not tracker:
             console.print(f"[{color}]{message}[/] {rel_path}")
 
@@ -466,10 +475,10 @@ def handle_vscode_settings(sub_item, dest_file, rel_path, verbose=False, tracker
             with open(dest_file, 'w', encoding='utf-8') as f:
                 json.dump(merged, f, indent=4)
                 f.write('\n')
-            log("Merged:", "green")
+            log("Merged:", "spring_green1")
         else:
             shutil.copy2(sub_item, dest_file)
-            log("Copied (no existing settings.json):", "blue")
+            log("Copied (no existing settings.json):", "cyan")
 
     except Exception as e:
         log(f"Warning: Could not merge, copying instead: {e}", "yellow")
@@ -611,7 +620,7 @@ def download_template_from_github(download_dir: Path, *, script_type: str = "sh"
                 else:
                     if show_progress:
                         with Progress(
-                            SpinnerColumn(),
+                            SpinnerColumn(style="spring_green1"),
                             TextColumn("[progress.description]{task.description}"),
                             TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
                             console=console,
@@ -837,10 +846,10 @@ def ensure_executable_scripts(project_path: Path, tracker: StepTracker | None = 
 
 @app.command()
 def init(
-    project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here, or use '.' for current directory)"),
+    project_name: str = typer.Argument(None, help="Project directory name. Use '.' or --here to initialize in the current directory."),
     script_type: str = typer.Option(None, "--script", help="Script type to use: sh or ps"),
     no_git: bool = typer.Option(False, "--no-git", help="Skip git repository initialization"),
-    here: bool = typer.Option(False, "--here", help="Initialize project in the current directory instead of creating a new one"),
+    here: bool = typer.Option(False, "--here", help="Initialize in the current directory (equivalent to passing '.')."),
     force: bool = typer.Option(False, "--force", help="Force merge/overwrite when using --here (skip confirmation)"),
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
     debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
@@ -860,9 +869,9 @@ def init(
         biospec init my-project
         biospec init my-project --script sh
         biospec init my-project --no-git
-        biospec init . --script sh          # Initialize in current directory
+        biospec init . --script sh         # Initialize in current directory
         biospec init .                      # Initialize in current directory (interactive script selection)
-        biospec init --here --script sh     # Alternative syntax for current directory
+        biospec init --here --script sh     # Equivalent to '.' for current directory
         biospec init --here
         biospec init --here --force         # Skip confirmation when current directory not empty
     """
@@ -890,7 +899,7 @@ def init(
             console.print(f"[yellow]Warning:[/yellow] Current directory is not empty ({len(existing_items)} items)")
             console.print("[yellow]Template files will be merged with existing content and may overwrite existing files[/yellow]")
             if force:
-                console.print("[cyan]--force supplied: skipping confirmation and proceeding with merge[/cyan]")
+                console.print("[spring_green1]--force supplied: skipping confirmation and proceeding with merge[/spring_green1]")
             else:
                 response = typer.confirm("Do you want to continue?")
                 if not response:
@@ -900,7 +909,7 @@ def init(
         project_path = Path(project_name).resolve()
         if project_path.exists():
             error_panel = Panel(
-                f"Directory '[cyan]{project_name}[/cyan]' already exists\n"
+                f"Directory '[spring_green1]{project_name}[/spring_green1]' already exists\n"
                 "Please choose a different project name or remove the existing directory.",
                 title="[red]Directory Conflict[/red]",
                 border_style="red",
@@ -913,16 +922,16 @@ def init(
     current_dir = Path.cwd()
 
     setup_lines = [
-        "[cyan]BioSpec Project Setup[/cyan]",
+        "[spring_green3]BioSpec Project Setup[/spring_green3]",
         "",
-        f"{'Project':<15} [green]{project_path.name}[/green]",
+        f"{'Project':<15} [spring_green1]{project_path.name}[/spring_green1]",
         f"{'Working Path':<15} [dim]{current_dir}[/dim]",
     ]
 
     if not here:
         setup_lines.append(f"{'Target Path':<15} [dim]{project_path}[/dim]")
 
-    console.print(Panel("\n".join(setup_lines), border_style="cyan", padding=(1, 2)))
+    console.print(Panel("\n".join(setup_lines), border_style="spring_green3", padding=(1, 2)))
 
     should_init_git = False
     if not no_git:
@@ -1016,7 +1025,7 @@ def init(
             pass
 
     console.print(tracker.render())
-    console.print("\n[bold green]Project ready.[/bold green]")
+    console.print("\n[bold spring_green3]Project ready.[/bold spring_green3]")
 
     # Show git error details if initialization failed
     if git_error_message:
@@ -1038,7 +1047,7 @@ def init(
     # Next steps panel
     steps_lines = []
     if not here:
-        steps_lines.append(f"1. Go to the project folder: [cyan]cd {project_name}[/cyan]")
+        steps_lines.append(f"1. Go to the project folder: [spring_green1]cd {project_name}[/spring_green1]")
         step_num = 2
     else:
         steps_lines.append("1. You're already in the project directory!")
@@ -1048,24 +1057,26 @@ def init(
     step_num += 1
     
     steps_lines.append(f"{step_num}. Follow the typical BioSpec workflow:")
+    steps_lines.append("   [dim]Run these in VS Code Copilot Chat (slash commands), not in your terminal.[/dim]")
     steps_lines.append("")
-    steps_lines.append("   [bold cyan]Setup[/bold cyan]")
+    steps_lines.append("   [bold spring_green3]Setup[/bold spring_green3]")
     steps_lines.append("   • [cyan]/biospec.setup[/cyan] - Create project/ directory and insert templates")
     steps_lines.append("")
-    steps_lines.append("   [bold cyan]Autofill[/bold cyan]")
+    steps_lines.append("   [bold spring_green3]Autofill[/bold spring_green3]")
     steps_lines.append("   • [cyan]/biospec.autofill[/cyan] - Populate templates from your project materials")
     steps_lines.append("     [dim](attach text/markdown files - use markitdown for PDFs/presentations)[/dim]")
     steps_lines.append("")
-    steps_lines.append("   [bold cyan]Refine and Edit [/bold cyan]")
+    steps_lines.append("   [bold spring_green3]Refine and Edit [/bold spring_green3]")
     steps_lines.append("   • [cyan]/biospec.discuss[/cyan] - Brainstorm ideas & explore alternatives")
     steps_lines.append("   • [cyan]/biospec.review[/cyan] - Get critical feedback on your project")
     steps_lines.append("   • [cyan]/biospec.edit[/cyan] - Make targeted changes to specific fields")
     steps_lines.append("")
-    steps_lines.append("   [bold cyan]Convenience[/bold cyan]")
+    steps_lines.append("   [bold spring_green3]Convenience[/bold spring_green3]")
     steps_lines.append("   • [cyan]/biospec.links[/cyan] - Validate cross-references between documents")
+    steps_lines.append("   • [cyan]/biospec.diagram[/cyan] - Generate a Mermaid dependency diagram of intents, datasets, and analyses")
     steps_lines.append("   • [cyan]/biospec.status[/cyan] - Check progress & template completion")
 
-    steps_panel = Panel("\n".join(steps_lines), title="Typical Workflow", border_style="cyan", padding=(1,2))
+    steps_panel = Panel("\n".join(steps_lines), title="Typical Workflow", border_style="spring_green3", padding=(1,2))
     console.print()
     console.print(steps_panel)
 
@@ -1076,7 +1087,7 @@ def init(
         "• See the README for detailed documentation",
         ""
     ]
-    additional_panel = Panel("\n".join(additional_lines), title="Learn More", border_style="cyan", padding=(1,2))
+    additional_panel = Panel("\n".join(additional_lines), title="Learn More", border_style="spring_green3", padding=(1,2))
     console.print()
     console.print(additional_panel)
 
