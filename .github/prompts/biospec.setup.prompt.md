@@ -66,15 +66,18 @@ Do not perform any other actions until you have initialized the todo list.
      - `analysis_overview.md`
      - `dataset_overview.md`
      - `project_resources.md`
+     - `dependencies.md`
      - `status.md`
    - **Do NOT copy**: Subtemplates (`intent.md`, `dataset.md`, `analysis.md`) or the `.biospec` folder itself.
 
 **Checklist Item 4: Initialize Metadata**
 
-1. **Update Headers**:
-   - For each copied file in `project/`, use `replace_string_in_file` to set:
-     - `Version: 0.1`
-     - `Last updated: [Current Date]`
+1. **Update Frontmatter Metadata**:
+    - The current templates use YAML frontmatter keys like `schema_version` and `last_updated` (not `Version:`).
+    - For each copied file in `project/`, update the frontmatter line:
+       - `last_updated: YYYY-MM-DD` -> `last_updated: [Current Date]`
+    - Keep `schema_version` unchanged.
+    - Use `apply_patch` edits (preferred) or a safe, targeted `run_in_terminal` command (e.g., `python`/`sed`) that only touches the `last_updated:` line.
 
 ## 3. Post-Setup Communication
 

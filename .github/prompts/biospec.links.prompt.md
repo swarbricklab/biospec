@@ -1,5 +1,6 @@
 ---
 description: Validate and enhance cross-references between BioSpec documents
+name: biospec.links
 agent: BioSpec
 ---
 
@@ -27,7 +28,7 @@ Your task is to parse BioSpec documents, validate existing links, identify missi
 - Identify all intents in `project/intents/`
 - Identify all datasets in `project/datasets/`
 - Identify all analyses in `project/analyses/`
-- Read overview files: `intent_overview.md`, `dataset_overview.md`, `analysis_overview.md`
+- Read overview files: `project/intent_overview.md`, `project/dataset_overview.md`, `project/analysis_overview.md`, `project/dependencies.md`
 
 **Extract component metadata:**
 For each intent, dataset, and analysis file, extract:

@@ -17,9 +17,9 @@ last_updated: YYYY-MM-DD
 <!-- Summarize the analysis -->
 
 ## Input Data
-<!-- Specific data inputs for this analysis -->
-- **Primary input**: 
-- **Subset/filters**: 
+<!-- Specific data inputs for this analysis. For tool development: requirements, specifications, existing code to integrate with. -->
+- **Primary input**:
+- **Subset/filters**:
 - **Required preprocessing**: 
 
 ## Priority
@@ -47,7 +47,7 @@ last_updated: YYYY-MM-DD
 - 
 
 ## Assumptions & Limitations
-<!-- Key assumptions underlying this analysis and known limitations -->
+<!-- Key assumptions underlying this analysis and known limitations. E.g., assumes samples are independent, limited to human data, requires minimum sample size. -->
 - 
 
 ## Success Criteria
@@ -57,7 +57,7 @@ last_updated: YYYY-MM-DD
 - 
 
 ## Validation Strategy
-<!-- How will results be validated? E.g., cross-validation, comparison to known results, biological plausibility checks -->
+<!-- How will results be validated? For analysis: cross-validation, comparison to known results, biological plausibility checks. For tool development: unit tests, integration tests, benchmarks, user acceptance testing. -->
 - 
 
 ## Related Components
@@ -68,7 +68,7 @@ last_updated: YYYY-MM-DD
 - [Intent {n}: {Short Identifier}](../intents/intent-{n}.md)
 
 **Uses Datasets**:
-<!-- List dataset IDs this analysis operates on -->
+<!-- List dataset IDs this analysis operates on. For tool development tasks without data dependencies, this may be N/A. -->
 - [Dataset {n}: {Name}](../datasets/dataset-{n}.md)
 
 **Back to Overview**: [Analysis Overview](../analysis_overview.md)

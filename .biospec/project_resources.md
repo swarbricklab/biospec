@@ -22,11 +22,14 @@ last_updated: YYYY-MM-DD
 - **Operating System**: <!-- E.g., Linux, Windows -->
 - **Environment**: <!-- local | HPC | cloud | hybrid | local + HPC -->
 
-### HPC/Cloud Details (if relevant)
-<!-- Provide additional information about your HPC/Cloud resources -->
+<details>
+<summary>HPC/Cloud Details (expand if using remote compute)</summary>
+
 - **Infrastructure**:
 - **Job submission method**:
 - **Additional information**: <!-- For example, HPC Project Code -->
+
+</details>
 
 ### Data Storage
 <!-- Describe the data storage and backup approach for this project -->

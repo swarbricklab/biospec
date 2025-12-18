@@ -4,7 +4,7 @@ schema_version: 0.1.1
 last_updated: YYYY-MM-DD
 ---
 
-# Project Status
+# Documentation Status
 
 <!-- Track completion status of BioSpec templates and fields -->
 

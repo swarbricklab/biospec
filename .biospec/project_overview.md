@@ -14,7 +14,18 @@ last_updated: YYYY-MM-DD
 
 ## Basic Information
 - **Project Title**: <!-- Descriptive, report-style title -->
-- **Project Type**: <!-- The general nature of the computational project (e.g., exploratory, targeted, package development, workflow refactoring, shared task) -->
+<!--
+Common project types:
+- exploratory: Open-ended data investigation, pattern discovery
+- targeted: Testing specific hypotheses with defined success criteria
+- method development: Building new analytical approaches or algorithms
+- package development: Building reusable tools, libraries, or software
+- workflow development: Creating reproducible pipelines (Snakemake, Nextflow, etc.)
+- workflow application: Applying established pipelines to new data
+- benchmarking: Systematic comparison of methods or tools
+- shared task: Multi-site collaboration on common objectives
+-->
+- **Project Type**:
 - **Start Date**: <!-- If exact, use YYYY-MM-DD format by default -->
 - **Expected Duration**: 
 - **Principal Investigator/Lead**: 
@@ -28,6 +39,7 @@ last_updated: YYYY-MM-DD
 <!-- Words or phrases (separated by commas ',') that best desribe the project -->
 
 ## Scientific Context
+<!-- For tool/method development projects not tied to a specific biological system, this section may be brief or N/A -->
 
 - **Biological System**: 
   - Organism(s): <!-- E.g., human, mouse -->
@@ -35,7 +47,13 @@ last_updated: YYYY-MM-DD
   - Cell Types(s): <!-- E.g., immune cells -->
   - Developmental Stage: <!-- E.g., adult -->
 
-- **Biological Scale**: <!-- Comma separated list of the modalities/omics involved in the project, for example: genomic | transcriptomic (e.g., scRNAseq, WTS) | proteomic | metabolomic | multi-omic | imaging | Phenocycler | Visium | Xenium | annotated pathology slides | SNP microarray | Organoid | Patient Derived Xenograft -->
+<!--
+Comma-separated list of modalities/omics involved in the project.
+Examples: genomic, transcriptomic (scRNAseq, WTS), proteomic, metabolomic,
+multi-omic, imaging, Phenocycler, Visium, Xenium, annotated pathology slides,
+SNP microarray, Organoid, Patient Derived Xenograft
+-->
+- **Biological Scale**:
 
 - **Key Biological Processes of Interest**: <!-- Bullet-point list e.g., pathways, interactions, architectures -->
 

@@ -42,6 +42,7 @@ Before making any edits, check that the `project/` directory and core singleton 
 - `project/intent_overview.md`
 - `project/dataset_overview.md`
 - `project/analysis_overview.md`
+- `project/dependencies.md`
 
 If they do not exist, stop and inform the user that they must run the setup command first (e.g. `/biospec.setup`) to initialize BioSpec docs.
 
@@ -63,6 +64,15 @@ If the user attached files, check their file formats. If you cannot open or read
 - Do NOT assume or infer any information. Only record high confidence, unambiguous information. 
 - Do NOT invent or create new fields in the BioSpec docs. 
 - Remain faithful to provided template and field descriptions.
+
+### Template-Structure Rules (important)
+
+- **Preserve the template structure**: Keep headings, tables, and `<details>` blocks intact; fill in the blanks inside them.
+- **Preserve guidance comments**: Keep `<!-- ... -->` comments unless you are explicitly replacing the placeholder they describe.
+- **Replace placeholders consistently**: When creating component files, replace `{n}` (and `{m}` / `{h}`) consistently across:
+   - YAML frontmatter IDs (e.g., `dataset_id: {n}`)
+   - The top-level title (e.g., `# Dataset {n}: ...`)
+   - Cross-links in “Related Components” sections
 
 **When a field already contains content**:
 1. If existing content is a placeholder (e.g., "TBD", "To be determined"): Replace it
@@ -136,7 +146,7 @@ Scan the repository systematically in two priority levels.
 
 **File discovery**:
 ```bash
-# Use Glob tool to find these patterns:
+# Use a glob-style file search to find these patterns (e.g., the workspace file search tool):
 README*
 PROJECT*
 docs/{index,project_overview,README}*
@@ -161,7 +171,7 @@ docs/{index,project_overview,README}*
 
 **File discovery**:
 ```bash
-# Use Glob tool to find these patterns:
+# Use a glob-style file search to find these patterns (e.g., the workspace file search tool):
 **/*.{py,R,jl,rs}
 {requirements.txt,pyproject.toml,renv.lock,package.json}
 {Snakefile,nextflow.config,*.nf,*.wdl}
@@ -216,6 +226,7 @@ Scan for *all* distinct research questions, aims, or goals **that the current pr
 For *each* distinct intent found:
 - Check if it is already represented in an existing `intent-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
 - If it is not represented, create `project/intents/intent-{n}.md` using the template from `.biospec/subtemplates/intent.md`
+- Ensure the intent’s YAML frontmatter (e.g., `intent_id`, `intent_type`) and the `# Intent {n}: ...` title match the chosen number and type.
 - Fill out: Type, Statement, Priority, Hypotheses (if applicable), Expected Outcomes, Success Criteria
 - Link to related datasets and analyses (even if not yet created)
 
@@ -232,11 +243,19 @@ Scan for *all* distinct datasets or cohorts **that will be used in the current p
 For *each* dataset or cohort:
 - Check if it is already represented in an existing `dataset-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
 - If it is not represented, create `project/datasets/dataset-{n}.md` using the template from `.biospec/subtemplates/dataset.md`
+- Ensure the dataset’s YAML frontmatter (e.g., `dataset_id`) and the `# Dataset {n}: ...` title match the chosen number.
 - Follow this three-check system:
    1. The integration check: "Will these modalities be loaded into a single Python/R object (e.g., Anndata, Seurat) for analysis?" Yes: Keep them together (e.g., CITE-seq, Multiome). No: Split them (e.g., Visium + scRNA-seq).
    2. The cohort check: "Are these samples analyzed as a single biological unit, or are they distinct study phases (e.g. discovery and validation cohort)?" Yes: Keep them together. No: Split them.
    3. The governance check: "Does the entire dataset share the same access permissions?" Yes: Keep them together. No: Split them.
 - Fill out: Data Types, Sample Information, Metadata Requirements, Access, Citation
+
+**Dataset template-specific guidance** (align to `.biospec/subtemplates/dataset.md`):
+- Use **one row per modality** in the `Modalities` table.
+- If multiple modalities exist, add/duplicate a `### Modality {m}: ...` block in the “Modality Details” `<details>` section for each modality.
+- Keep `Access` constrained to the template options (`Public` or `In-house`) unless the template itself changes.
+- Prefer putting sample-count and batch-effect details in the “Sample Information” `<details>` section (`Total Samples`, `Batch Variables`, `Identifier Convention`).
+
 - Link to related intents and analyses
 
 **Conservative approach**: If a dataset is only mentioned for comparison or as prior work, do not create a dataset file; instead note it in "Prior Work" section of `project_overview.md`.
@@ -252,6 +271,7 @@ Scan for *all* distinct computational analyses or objectives **that the current 
 For *each* analysis:
 - Check if it is already represented in an existing `analysis-{n}.md` file. If so, skip creating a duplicate and prefer to update the existing file.
 - If it is not represented, create `project/analyses/analysis-{n}.md` using the template from `.biospec/subtemplates/analysis.md`
+- Ensure the analysis YAML frontmatter (e.g., `analysis_id`) and the `# Analysis {n}: ...` title match the chosen number.
 - Fill out: Description, Priority, Methods & Tools, Expected Outputs, Success Criteria
 - Link to related intents and datasets
 - **Conservative approach**: Only populate the "Tools/Packages" field if specific tools are explicitly mentioned as being used in the current project, not just referenced

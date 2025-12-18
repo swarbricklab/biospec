@@ -14,6 +14,7 @@ last_updated: YYYY-MM-DD
 <!-- This template represents a single dataset -->
 
 ## Extended Name
+<!-- Full descriptive name for this dataset, e.g., "TCGA Breast Cancer RNA-seq Cohort" -->
 
 ## Dataset-Level Context
 
@@ -34,7 +35,9 @@ We assume one sample sheet per modality (it's okay if this it not the case). -->
 | --- | --- | --- | --- | --- |
 |  |  |  |  |  |
 
-## Modality Details
+<details>
+<summary>Modality Details (expand for per-modality specifications)</summary>
+
 <!-- Duplicate this section for each modality -->
 
 ### Modality {m}: {Short Descriptor}
@@ -53,17 +56,22 @@ We assume one sample sheet per modality (it's okay if this it not the case). -->
 
 **Additional or Reference Data Required**:
 
-## Sample Information
+</details>
+
+<details>
+<summary>Sample Information (expand for detailed sample metadata)</summary>
 
 **Total Samples**: <!-- Count of unique biological units represented in this dataset (e.g., participants or biospecimens) -->
 
-**Batch Variables**: 
+**Batch Variables**: <!-- Variables that may introduce batch effects, e.g., sequencing run, processing date, collection site -->
 
 **Identifier Convention**: <!-- E.g., sample IDs follow pattern: {cohort}_{subject}_{sample} -->
 
-## Metadata Needs (+/- Availability)
+## Required Metadata & Availability
 <!-- In addition to the primary data, what other information is available/needed per sample (typically from the modality sample sheet)? E.g., disease status, age, medical history. -->
-- 
+-
+
+</details>
 
 ## Related Components
 <!-- Links to related components -->
