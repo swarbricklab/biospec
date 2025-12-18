@@ -2,7 +2,7 @@
 template_name: Intent Document
 intent_id: {n}
 intent_type: question | aim | goal
-schema_version: 0.1.1
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 

@@ -1,7 +1,7 @@
 ---
 template_name: Computational Task/Analysis
 analysis_id: {n}
-schema_version: 0.1.1
+schema_version: 0.2.0
 last_updated: YYYY-MM-DD
 ---
 
