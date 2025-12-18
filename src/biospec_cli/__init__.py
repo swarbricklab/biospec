@@ -127,13 +127,13 @@ def _format_rate_limit_error(status_code: int, headers: httpx.Headers, url: str)
 
 SCRIPT_TYPE_CHOICES = {"sh": "POSIX Shell (bash/zsh)", "ps": "PowerShell"}
 
-BANNER = """
-██████╗ ██╗ ██████╗ ███████╗██████╗ ███████╗ ██████╗
-██╔══██╗██║██╔═══██╗██╔════╝██╔══██╗██╔════╝██╔════╝
-██████╔╝██║██║   ██║███████╗██████╔╝█████╗  ██║
-██╔══██╗██║██║   ██║╚════██║██╔═══╝ ██╔══╝  ██║
-██████╔╝██║╚██████╔╝███████║██║     ███████╗╚██████╗
-╚═════╝ ╚═╝ ╚═════╝ ╚══════╝╚═╝     ╚══════╝ ╚═════╝
+BANNER = r"""
+  ____  _       ____                   
+ | __ )(_) ___ / ___| _ __   ___  ___  
+ |  _ \| |/ _ \\___ \| '_ \ / _ \/ __| 
+ | |_) | | (_) |___) | |_) |  __/ (__  
+ |____/|_|\___/|____/| .__/ \___| \___| 
+                     |_|               
 """
 
 TAGLINE = "BioSpec - Structured Specifications for Computational Biology Research"
@@ -195,11 +195,11 @@ class StepTracker:
 
             status = step["status"]
             if status == "done":
-                symbol = "[green]●[/green]"
+                symbol = "[cyan]●[/cyan]"
             elif status == "pending":
-                symbol = "[green dim]○[/green dim]"
+                symbol = "[grey30]○[/grey30]"
             elif status == "running":
-                symbol = "[cyan]○[/cyan]"
+                symbol = "[spring_green1]○[/spring_green1]"
             elif status == "error":
                 symbol = "[red]●[/red]"
             elif status == "skipped":
@@ -281,7 +281,7 @@ def select_with_arrows(options: dict, prompt_text: str = "Select an option", def
         return Panel(
             table,
             title=f"[bold]{prompt_text}[/bold]",
-            border_style="cyan",
+            border_style="spring_green3",
             padding=(1, 2)
         )
 
@@ -340,8 +340,7 @@ app = typer.Typer(
 def show_banner():
     """Display the ASCII art banner."""
     banner_lines = BANNER.strip().split('\n')
-    colors = ["bright_blue", "blue", "cyan", "bright_cyan", "white", "bright_white"]
-
+    colors = ["spring_green3", "spring_green1", "medium_spring_green", "cyan", "sky_blue1", "deep_sky_blue1"]
     styled_banner = Text()
     for i, line in enumerate(banner_lines):
         color = colors[i % len(colors)]
