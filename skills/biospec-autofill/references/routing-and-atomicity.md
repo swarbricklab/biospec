@@ -4,11 +4,23 @@ Use this when autofill evidence may map to multiple BioSpec docs, create new com
 
 ## Collaboration Model
 
-For many or messy artefacts, use inspectors/subagents only for read-only evidence gathering. They should not edit BioSpec files. Each inspector returns an evidence ledger:
+Use an orchestrator for every autofill job. The orchestrator loads BioSpec context, owns precedence/conflict handling, writes final edits, and gives the compact report. For one small source, the main agent can act as both orchestrator and inspector.
+
+For many or messy artefacts, spawn inspectors/subagents when the host supports them. Inspectors are read-only and never edit BioSpec files. Each inspector returns an evidence ledger:
 
 `source path | locator | excerpt | candidate doc/field | evidence class | confidence | existing/new component suggestion | conflicts/privacy notes`
 
-The orchestrator loads existing BioSpec context, reconciles ledgers, applies precedence, deduplicates entities, proposes one coherent diff, and edits only after approval. Inspectors may be split by artefact type (grant, slides, manifests, code) or by source folder.
+The orchestrator reconciles ledgers, applies precedence, deduplicates entities, then writes high-confidence non-conflicting fills directly. It asks first only for repo scan consent, deletions, conflicting nonblank fields, low-confidence fills, or uncertain component creation. It should not print a full diff unless the user requests one. Inspectors may be split by artefact type (grant, slides, manifests, code) or by source folder.
+
+## User Intake
+
+When the source or fill scope is underspecified, ask one compact intake question before extraction. Use project domains instead of BioSpec filenames:
+
+- **Area default**: all likely areas. Offer opt-in narrowing only if the user wants it: overview/governance, questions/aims, datasets/cohorts, analyses/workflows, resources.
+- **Repo scan choices**: no scan; docs/metadata only; docs + configs/workflows; targeted paths from free text; broad scan using the skip policy.
+- **Free text**: explicitly invite paths, folders, accessions, proposal sections, or notes the user wants prioritized.
+
+If the user is unsure, keep all likely areas selected and use the narrowest scan that can answer the request. Do not ask them to choose `project_overview.md`, `dataset-{n}.md`, or other internal template names unless they already used those names.
 
 ## Write Order
 

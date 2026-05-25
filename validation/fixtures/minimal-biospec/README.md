@@ -1,8 +1,9 @@
 # Minimal BioSpec fixture
 
 A tiny, realistic BioSpec-shaped project used to exercise the verb skills
-during validation. Treat this as **read-only test data** — the routing matrix
-asks agents to *propose* edits and dry-run changes, never to apply them
+during validation. Treat this directory as **read-only test data**. Copy it to
+scratch before running prompts; `biospec-autofill` may direct-fill there, while
+setup/edit/sync still use approval-first writes. Never modify this fixture
 in-place.
 
 When walking the routing matrix:

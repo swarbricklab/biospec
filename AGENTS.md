@@ -43,8 +43,9 @@ plus each verb-skill's Iron Law and Red Flags table.
   are background unless the project explicitly commits.
 - **Template integrity** — preserve headings, `<details>` blocks, repeated
   `### Step {s}` headers, and `<!-- guidance -->` comments.
-- **Propose-first writes** — every write-capable skill presents a diff and
-  applies only on explicit user approval.
+- **Write mode by verb** — `biospec-autofill` may apply high-confidence,
+  cited source facts directly with compact reporting; `biospec-setup`,
+  `biospec-edit`, and `biospec-sync` use approval-first writes.
 - **No invention** — leave fields blank rather than guess; cite source path
   and excerpt for nontrivial autofills.
 

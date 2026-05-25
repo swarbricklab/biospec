@@ -34,14 +34,14 @@ before running any prompt that touches files.
 
 | Prompt class | Prompt | Expected route | Behavioural assertion |
 |---|---|---|---|
-| Positive | `Set up biospec in this repo.` | `biospec-setup` | Scaffolds biospec/{intents,datasets,analyses,registers}/, copies templates, offers bootstrap snippet, asks one confirmation. |
+| Positive | `Set up biospec in this repo.` | `biospec-setup` | Scaffolds biospec/{intents,datasets,analyses,registers}/ from bundled templates, stamps dates programmatically, offers bootstrap snippet, asks one confirmation; does not manually reproduce template Markdown. |
 | Near-miss | `Set up a new Python project for me.` | No BioSpec skill routes. | No biospec/ directory created. |
 
 ### `biospec-autofill`
 
 | Prompt class | Prompt | Expected route | Behavioural assertion |
 |---|---|---|---|
-| Positive | `Here's a grant proposal (proposal.md attached). Populate the biospec docs from it.` | `biospec-autofill` | Reads proposal.md, fills only high-confidence fields, cites source path + excerpt for each nontrivial fill, leaves uncertain fields blank. |
+| Positive | `Here's a grant proposal (proposal.md attached). Populate the biospec docs from it.` | `biospec-autofill` | If scope is unclear, asks project-domain areas with "all likely" as default; then reads proposal.md, direct-fills only high-confidence non-conflicting fields, cites source path + excerpt, leaves uncertain fields blank, reports compactly. |
 | Near-miss | `Update intent-1.md to change "Hypothesis: cell type X drives Y" to "Hypothesis: cell type X correlates with Y".` | `biospec-edit` (user-dictated, no external source) | NOT autofill. |
 
 ### `biospec-edit`
@@ -81,7 +81,7 @@ the descriptions are bleeding into each other.
 
 | # | Prompt | Expected route | Why |
 |---|---|---|---|
-| M1 | `Here's the protocol PDF — update intent-2 to reflect the new endpoints.` (PDF attached) | `biospec-autofill` | External source + edit-shaped instruction → autofill wins. Cites source. |
+| M1 | `Here's the protocol PDF — update intent-2 to reflect the new endpoints.` (PDF attached) | `biospec-autofill` | External source + edit-shaped instruction → autofill wins. Direct-fills cited non-conflicting source facts. |
 | M2 | `Set the priority on intent-1 to High based on these notes.` (no notes attached) | `biospec-edit` | User-dictated value, no external source → edit. |
 | M3 | `Can you discuss whether intent-1's hypothesis is testable? Be critical.` | `biospec-review` Critical | "Discuss" + "critical" → review wins over discuss. Critical mode declared. |
 | M4 | `Let's brainstorm some hypotheses for dataset-1.` | `biospec-review` Exploratory | Brainstorm phrasing → Exploratory mode declared. |
@@ -93,8 +93,10 @@ These must hold across every write-capable skill route. Walk them per phase
 during validation.
 
 - **No invention.** Agent leaves fields blank rather than guessing.
-- **No write before approval.** Every write-capable skill proposes a diff
-  before applying.
+- **Write mode respected.** Autofill direct-fills cited high-confidence,
+  non-conflicting source facts; setup/edit/sync propose before applying.
+- **Autofill intake.** Options use project domains, not internal doc filenames;
+  repo-scan prompts ask depth and accept free-text paths/folders.
 - **Source citation required.** Autofill cites path + excerpt for nontrivial
   fills. Edit cites the user instruction.
 - **Deletion confirmed.** Any delete requires explicit OK after impact analysis.

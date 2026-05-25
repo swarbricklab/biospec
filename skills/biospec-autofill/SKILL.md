@@ -1,49 +1,47 @@
 ---
 name: biospec-autofill
-description: Use when external sources (grants, manuscripts, slides, spreadsheets, repository docs/code, attachments) should populate BioSpec templates from cited evidence. Source-driven only; direct dictation routes to biospec-edit.
+description: Use when external sources should populate BioSpec templates from cited evidence: grants, manuscripts, slides, spreadsheets, repository docs/code, attachments. Direct dictation routes to biospec-edit.
 ---
 
 # biospec-autofill
 
-**NEVER INVENT. EVERY NONTRIVIAL FILL MUST CITE A SOURCE PATH AND EXCERPT.**
+**NEVER INVENT. DIRECT-FILL ONLY HIGH-CONFIDENCE CITED FACTS; ASK ON CONFLICTS, DELETIONS, OR LOW CONFIDENCE.**
 
 ## Route check
 
-If the user dictated content directly and no external source is involved -> `biospec-edit`. Autofill extracts from attachments, named paths, or repo scans with explicit consent.
+User-dictated content with no external source -> `biospec-edit`. Autofill extracts from attachments, named paths, or consented repo scans.
 
 ## Core Pattern
 
-1. **Pre-flight.** Confirm `biospec/` exists; read current BioSpec context and target template(s). Missing singleton overviews -> stop, recommend `biospec-setup`.
-2. **Scope.** Parse any scope lock (cohort, project, component) and ignore unrelated source content.
-3. **Resolve sources.** Use attached/pasted files -> named file paths -> repo scan **only with explicit user yes**.
-4. **Triage and route.** For artifact parsing, target fields, orchestration, and new-vs-existing components, read `references/source-parsing.md` and `references/routing-and-atomicity.md`.
-5. **Extract.** Map to fields. For every nontrivial fill, record source path + locator (page/slide/cell/section) + short excerpt.
-6. **Classify evidence.** Use `confirmed commitment`, `observed implementation`, `background/reference`, or `option (unconfirmed)`. Only the first two may populate `analyses/`, `datasets/`, or `project_resources.md`; label observed implementation.
-7. **Propose, then apply.** Summarise per-field fills with citations; ask approval; apply on yes; update `last_updated`; preserve provenance inline or in Notes/citation map.
-8. **Report.** Path classes scanned/skipped; fields filled/blank; citation map.
+1. **Pre-flight.** Confirm `biospec/` exists; read context/templates. Missing overviews -> stop, recommend `biospec-setup`.
+2. **User options.** If unclear, ask project areas, not doc names: all likely (default), overview/governance, questions/aims, datasets/cohorts, analyses/workflows, resources. For repo scans, ask depth and allow free-text paths.
+3. **Scope and sources.** Parse scope lock; use attachments/pastes -> named paths -> repo scan **only with explicit user yes**.
+4. **Orchestrate.** For parsing, inspectors/subagents, fields, and component boundaries, read `references/source-parsing.md` and `references/routing-and-atomicity.md`.
+5. **Extract.** Map fields; record path + locator (page/slide/cell/section) + excerpt for nontrivial fills.
+6. **Classify evidence.** Use `confirmed commitment`, `observed implementation`, `background/reference`, or `option`. Only the first two populate `analyses/`, `datasets/`, or `project_resources.md`; label observed implementations.
+7. **Apply autofill.** Direct-write high-confidence, non-conflicting fills; update `last_updated`; preserve structure. No full diffs/proposals unless asked.
+8. **Attribute.** Add/update bottom `## Source Attribution` or Notes map with path + locator + excerpt.
+9. **Compact report.** Changed paths + fill counts; path classes scanned/skipped; fields left blank; conflicts or low-confidence candidates needing user input.
 
-## Scan policy (when the user authorises a repo scan)
+## Scan policy (authorised repo scans)
 
-**Read**: `README*`, `PROJECT*`, `docs/**`, proposal/grant/manuscript/methods, PDF/Office/spreadsheet/manifest/config files, env/lock/container files, workflow files, `.github/ISSUE_TEMPLATE/*`.
+**Read**: `README*`, `PROJECT*`, `docs/**`, proposals/grants/manuscripts/methods, PDF/Office/spreadsheets, manifests/configs, env/lock/container/workflow files, `.github/ISSUE_TEMPLATE/*`.
 
-**Skip and report**: raw data (`*.fastq*`, `*.bam`, `*.h5*`, `*.zarr`), large binaries, `.env*` and secrets, notebook outputs, dependency/cache/build artefacts. For access-controlled clinical/genomic trees, do not bulk-scan; read only explicitly named metadata/docs, avoid raw participant tables, redact identifiers in excerpts.
+**Skip/report**: raw data (`*.fastq*`, `*.bam`, `*.h5*`, `*.zarr`), large binaries, `.env*`/secrets, notebook outputs, dependency/cache/build artefacts. In controlled clinical/genomic trees, read named metadata/docs only; redact identifiers.
 
-**Technical-stack inference** from file presence (no content read): extensions -> language/runtime; `Snakefile`/`*.nf` -> workflow system. Use *only* if the user authorised this inference path.
+File-presence inference only with consent: extensions -> language/runtime; `Snakefile`/`*.nf` -> workflow system.
 
-## Source-filtering kernel (for multi-project sources)
+## Multi-project sources
 
-When a source spans multiple projects:
-
-- **Build scoped evidence by deletion.** Include or drop source sections wholesale; preserve structure and drop empty headers.
-- **Conservative.** When in doubt about relevance, keep the source section but mark uncertainty.
-- **Extraction may synthesize.** BioSpec fields may combine multiple cited snippets; cite each one.
+Drop irrelevant source sections wholesale; preserve structure; keep uncertain sections labelled. Field fills may synthesize multiple cited snippets.
 
 ## Common Mistakes
 
-- Inferring methods from prior-work mentions and adding to `analyses/` — that's background.
-- Filling `analysis.md` Methods from a `pyproject.toml` — presence ≠ commitment.
-- Silently overwriting existing conflicts. Append `[From source: <path>]` and flag.
-- Filling ambiguous fields. Leave blank.
+- Inferring methods from prior-work mentions and adding to `analyses/` — background.
+- Filling `analysis.md` Methods from `pyproject.toml` — presence ≠ commitment.
+- Asking users to choose internal doc names. Offer project areas and default to all likely areas.
+- Printing full proposed diffs for straightforward autofill. Save tokens; write cited fills and report compactly.
+- Silently overwriting existing conflicts. Ask which source wins.
 - Losing page/slide/cell provenance after applying edits.
 
 ## Red Flags
@@ -51,6 +49,8 @@ When a source spans multiple projects:
 | Excuse | Override |
 |---|---|
 | "It's clearly implied — I don't need a citation." | If nontrivial, cite. Otherwise leave blank. |
+| "Autofill means I can guess the rest." | No. Autofill means source-driven direct writes, not invention. |
 | "The README mentions tool X, so I'll add it to resources." | Reference vs implementation. Only commitments. |
-| "I'll scan the `.env` file just this once." | No. Skipped path classes are skipped. **Period.** |
+| "I'll scan the `.env` file just this once." | No. Skipped path classes are skipped. |
+| "Inspectors can patch the files they inspect." | No. Inspectors gather evidence; the orchestrator writes. |
 | "The user dictated content while attaching a file." | Dictated parts → `biospec-edit`. Only source-extracted parts go through autofill. |
