@@ -1,0 +1,21 @@
+{
+  "name": "biospec",
+  "displayName": "BioSpec",
+  "version": "0.3.0",
+  "description": "Structured templates and skills for documenting computational biology / bioinformatics research projects. Helps both human researchers and AI agents maintain a stable, project-specific reference.",
+  "author": {
+    "name": "Swarbrick Lab",
+    "url": "https://github.com/swarbricklab"
+  },
+  "homepage": "https://github.com/swarbricklab/BioSpec",
+  "repository": "https://github.com/swarbricklab/BioSpec",
+  "license": "AGPL-3.0",
+  "keywords": [
+    "computational-biology",
+    "bioinformatics",
+    "research",
+    "project-spec",
+    "documentation"
+  ],
+  "skills": "./skills/"
+}

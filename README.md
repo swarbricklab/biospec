@@ -1,219 +1,94 @@
 # BioSpec
 
-[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0) ![Python](https://img.shields.io/badge/python-3.11+-blue)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-## Overview
+Structured templates and agent skills for documenting computational biology and bioinformatics research projects. The resulting specifications benefit human researchers, AI coding assistants, and reviewers — anyone who needs a stable project reference during development.
 
-BioSpec provides structured templates and VS Code chat commands to help you document your computational projects. The resulting specifications are intended to benefit both human researchers and AI coding/research agents.
+## Why BioSpec
 
-## 📑 Table of Contents
+Computational biology projects accumulate ad-hoc context that scatters across slide decks, grant proposals, meeting notes, and chat threads. AI coding agents in particular drift without a stable project reference. BioSpec defines a small, opinionated schema for that reference and ships a set of agent skills that help you populate, refine, and maintain it.
 
-- [Features](#features)
-- [Installation](#installation)
-- [Workflow](#workflow)
-- [Available Commands](#available-commands)
-- [Agent & Models](#agent--models)
-- [Templates & Directory Structure](#templates--directory-structure)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+The skills enforce a few habits that matter for research code: no invention, propose-first writes, scope lock, source citations for any extracted content, and the distinction between background prior-work and what the project actually commits to. The schema is intentionally small — eight singleton overviews plus three repeated subtemplates (intents, datasets, analyses) plus a decisions register.
 
-## Features
+## Install
 
-- **Standardized Templates**: Use structured templates to document your project and organize your plans.
-- **AI-Assisted Documentation**: Automatically populate project specifications from your existing notes, presentations and reports.
-- **VS Code Integration**: Integrated into your development environment via Copilot Chat.
-- **Iterative Refinement**: Tools for brainstorming, reviewing, and tracking the progress of your project specs.
+BioSpec ships as a plugin for any agent host that reads the SKILL.md format — Claude Code, Codex CLI, Codex App, Factory Droid, Gemini CLI, OpenCode, Cursor, GitHub Copilot CLI.
 
-## Installation
-
-### Prerequisites
-
-BioSpec requires the following:
-
-- **[uv](https://docs.astral.sh/uv/)**: Python package manager. Used for installing the BioSpec Command Line Interface (CLI) tool.
-- **[VS Code](https://code.visualstudio.com/)**: Required for the chat interface.
-- **[GitHub Copilot Chat for VS Code](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)**.
-- **A GitHub Account**: Needed to access Copilot, but also recommended for version control.
-
-These are also recommended, but not expected:
-- **[markitdown](https://github.com/microsoft/markitdown)**: Free command-line tool for converting many formats (e.g., PDF, Powerpoint) to markdown. It also offers an MCP option.
-- **A [Copilot Subscription](https://github.com/features/copilot)**: For improved model support and usage.
-- **[GitHub MCP Server](https://github.com/github/github-mcp-server)**: Improves agent interactions with GitHub.
-
-### Install BioSpec CLI
-
-**Option 1: Persistent Installation (Easiest)**
-
-Install globally using `uv`:
+### Claude Code
 
 ```bash
-uv tool install biospec-cli --from git+https://github.com/swarbricklab/BioSpec.git
+git clone https://github.com/swarbricklab/BioSpec.git ~/.claude/plugins/biospec
 ```
 
-Then use the tool directly:
+Restart Claude Code. The seven skills (`using-biospec`, `biospec-setup`, `biospec-autofill`, `biospec-edit`, `biospec-review`, `biospec-sync`, `biospec-templates`) appear in `/skills`.
+
+### Codex
 
 ```bash
-# Create a new project directory and add BioSpec templates/commands
-biospec init {project-directory-name}
-
-# Or, add BioSpec templates/commands to the current directory
-biospec init --here
+git clone https://github.com/swarbricklab/BioSpec.git ~/.codex/plugins/biospec
 ```
 
-You'll be prompted to choose a script type to use (bash or PowerShell, depending on your operating system).
+Restart Codex. Same seven skills.
 
-To upgrade to the latest version:
+### Standalone (any SKILL.md-aware host)
 
-```bash
-uv tool install biospec-cli --force --from git+https://github.com/swarbricklab/BioSpec.git
-```
+Clone this repo and point your agent host at the `skills/` directory. The plugin manifests under `.claude-plugin/` and `.codex-plugin/` are optional metadata — the skills themselves are portable.
 
-**Option 2: One-time Usage**
+## Quick start
 
-Run `biospec init` without installing the CLI:
-
-```bash
-uvx --from git+https://github.com/swarbricklab/BioSpec.git biospec init <project-directory-name>
-```
-
-Once set up in your project directory, you'll notice that a `github` and `biospec` folder have been added to your workspace. These contain command and agent files, and clean templates, respectively. Avoid editing these. The `/biospec.setup` command will set up templates for you.
-
-## Using Copilot Chat in VS Code
-
-See the [official documentation](https://code.visualstudio.com/docs/copilot/chat/copilot-chat) for full usage instructions. BioSpec relies on two key features:
-1. **Custom agents**: Beyond the inbuilt `ask`, `plan`, `agent` modes, VS Code supports custom agent definitions. These are selected in the bottom left dropdown box of the chat window. The BioSpec agent uses a predefined toolset to improve transparency and context management. 
-1. **Slash (`/`) commands**: Access chat commands by typing `/` in the chat window. These commands are effectively agent prompts, with the ability to specify the custom agent to use and tool restrictions.
-
-### Recommended Models for Copilot
-
-BioSpec has been tested on the base Copilot models, but yields the best results with:
-- **Gemini 3 Pro**
-- **Claude Sonnet 4.5**
-
-We strongly recommend these for the `biospec.autofill` command, for better instruction following and interpretation of any provided project materials. 
-
-## Workflow
-
-BioSpec is designed for an iterative workflow. Start with a template skeleton, populate it with your materials, and refine it through discussion.
-
-1.  **Initialize**: Run `biospec init` to initialize your project.
-2.  **Setup**: Open the project in VS Code (`code .`) and type `/biospec.setup` in GitHub Copilot Chat. This command creates the `project/` directory and copies the master templates. The agent will prompt you to enable Git version control (recommended). 
-3.  **Autofill**: Automatically populate templates using your existing project materials. Type `/biospec.autofill` and attach your materials by drag-and-drop or using `#`. 
-- You can also direct the agent to focus on particular elements, or ignore certain details. 
-- Text and markdown files are preferred for `autofill`. As mentioned above, we recommend `markitdown` for easily creating markdown files from your existing materials.
-- The agent only edits fields when confident, though reliability depends on the model.
-- This process may take a few minutes.
-> **A note on attaching scripts**: If your project contains many scripts, the assistant may not read them all or may overfocus on a subset. Consider asking the assistant to summarize related scripts in batches (e.g., folder-by-folder) into markdown files first, review these summaries for accuracy, then use them as inputs to `/biospec.autofill`.  
-
-4.  **Refine**:
-
-    Autofill provides a starting point. We recommend iterating on the outputs manually or using the commands below.
-
-    *   **`/biospec.discuss`** — Brainstorm ideas or explore alternatives for specific components. Use this as a sounding board for open-ended discussion.
-        - *Example*: "What alternative analyses could I run considering my available data?"
-        - *Example*: "Help me think through possible confounders in my analysis plan"
-
-    *   **`/biospec.review`** — Receive critical, structured peer review on specific aspects of your project.
-        - *Example*: "Review the hypothesis and success criteria in intent-1. Are they specific enough?"
-
-    *   **`/biospec.edit`** — Make targeted edits to specific fields. The agent proposes changes for your approval before applying them.
-        - *Example*: "I've settled on my hypotheses for the ligand-receptor analysis, can you add these to intent-2?" (attach your notes or text)
-        - *Example*: "I've been given GPU access and 500GB storage. Update my resources file and move deep learning approaches into scope in the project overview."
-        - Unlike `autofill`, which is more hands-off, `edit` shows you proposed changes and lets you refine them before application.
-
-5.  **Track & Organize**: 
-    *   **`/biospec.status`** — Update `status.md` to track progress. Get completion percentages for each template and identify what still needs attention.
-
-    *   **`/biospec.links`** — Validate cross-references and identify missing relationships between intents, datasets, and analyses. Keeps your specification internally consistent.
-
-## Available Commands
-
-BioSpec provides a suite of slash commands (prompts) to help you manage your project specification. These are available in GitHub Copilot Chat once the project is initialized.
-
-| Command | Description |
-| :--- | :--- |
-| `/biospec.setup` | **Initialize Project**: Creates the `project/` directory structure and copies master templates. Run this first. |
-| `/biospec.autofill` | **Populate Templates**: Automatically fill templates using project resources. |
-| `/biospec.discuss` | **Brainstorm & Explore**: Open-ended scientific discussion. Use this to generate ideas, explore alternatives, or weigh pros/cons. |
-| `/biospec.review` | **Peer Review**: Provides structured, critical feedback on specific fields or sections. Identifies flaws, missing controls, or clarity issues. |
-| `/biospec.edit` | **Targeted Edits**: Makes edits to specific fields based on your instructions. |
-| `/biospec.status` | **Check Progress**: Updates `project/status.md` to reflect the completion status of your templates. |
-| `/biospec.links` | **Manage References**: Validates existing links and suggests new cross-references between intents, datasets, and analyses. |
-| `/biospec.diagram` | **Generate Diagram**: Generates a Mermaid dependency diagram visualizing relationships between intents, datasets, and analyses. |
-
-Experimental commands (Work in progress):
-
-- `/biospec.experimental.filter`: Filter provided project materials to remove text not related to a specified project. 
-
-## Agent & Models
-
-### BioSpec Agent
-All BioSpec commands use a custom agent with restricted tool usage. This design adds guardrails, reduces context overhead, and prevents bloating your main Copilot instructions.
-
-## Templates & Directory Structure
-
-### Core Templates
-
-The templates follow three design principles:
-1. **Granularity**: Overview templates for summaries, and specific templates for detailed components.
-2. **Atomicity**: Minimize repetition.
-3. **Sufficiency**: Capture essential project details with minimal fields.
-
-Currently, the templates are:
-
-| Template | Description |
-| :--- | :--- |
-| `project_overview.md` | **Project Metadata**: Title, summary, scientific context, scope, and key stakeholders. |
-| `project_resources.md` | **Environment**: Computing resources, software stack, hardware, and data storage requirements. |
-| `intent_overview.md` | **Research Aims Index**: Lists all research questions/aims with a summary table and project-level milestones. |
-| `dataset_overview.md` | **Data Index**: Lists all datasets with a summary table and integration strategy. |
-| `analysis_overview.md` | **Analysis Index**: Lists all analysis objectives with priorities and dependencies. |
-| `dependencies.md` | **Dependency Graph**: Visualizes the relationships and dependencies between intents, datasets, and analyses. |
-| `status.md` | **Progress Tracker**: Tracks the completion status of all templates and fields. |
-
-### Subtemplates (Granular Components)
-
-These templates are instantiated multiple times—once for each distinct component of your project.
-
-| Template | Description | Location |
-| :--- | :--- | :--- |
-| `intent.md` | **Research Question**: A single aim, goal, or hypothesis. | `project/intents/intent-{n}.md` |
-| `dataset.md` | **Data Source**: A single dataset or cohort specification. | `project/datasets/dataset-{n}.md` |
-| `analysis.md` | **Computational Task**: A single analysis objective or method. | `project/analyses/analysis-{n}.md` |
-
-### Directory Layout
+In a repo where you want to set up a BioSpec project:
 
 ```
-.biospec/                          # Master templates (do not modify)
-├── subtemplates/                  # Master subtemplates for repeating components
-│   ├── intent.md
-│   ├── dataset.md
-│   └── analysis.md
-├── *_overview.md                  # Master overview templates
-└── status.md                      # Master status template
-
-project/                           # Your active project specification
-├── intents/                       # Individual intent instances
-│   ├── intent-1.md
-│   └── ...
-├── datasets/                      # Individual dataset instances
-│   ├── dataset-1.md
-│   └── ...
-├── analyses/                      # Individual analysis instances
-│   ├── analysis-1.md
-│   └── ...
-├── intent_overview.md             # Index linking to all intents
-├── dataset_overview.md            # Index linking to all datasets
-├── analysis_overview.md           # Index linking to all analyses
-├── dependencies.md                # Dependency visualization
-├── project_overview.md            # Project-level metadata
-├── project_resources.md           # Computing resources
-└── status.md                      # Completion tracking
+> set up biospec in this repo
 ```
 
-### Additional Information
-- To enable external agents to become explicitly aware of your BioSpec-created project specifications, copy the summary text from `optional-agent-instructions.md` into your agent's memory file (e.g. `copilot-instructions.md`, `CLAUDE.md`).
+The `biospec-setup` skill scaffolds `biospec/{intents,datasets,analyses,registers}/`, copies the singleton overview templates, and offers to append a one-paragraph bootstrap snippet to your repo's `AGENTS.md` or `CLAUDE.md`. The snippet auto-loads the BioSpec invariant rules on every subsequent session.
+
+From there:
+
+| You say | Skill that runs |
+|---|---|
+| "fill the templates from this proposal" (and attach it) | `biospec-autofill` — cited extraction |
+| "change the success criterion on intent-1 to p<0.01" | `biospec-edit` — propose-first |
+| "review intent-1 — are the criteria specific enough?" | `biospec-review` — Critical mode |
+| "what other clustering methods are worth considering?" | `biospec-review` — Exploratory mode |
+| "validate the cross-references in biospec/" | `biospec-sync` mode=links |
+| "regenerate the dependency diagram" | `biospec-sync` mode=diagram |
+
+## What's in a BioSpec project
+
+```
+biospec/
+├── project_overview.md          # Scope, scientific context, prior work
+├── project_resources.md         # Compute, software, storage
+├── intent_overview.md           # Index of research questions / aims
+├── dataset_overview.md          # Index of data sources
+├── analysis_overview.md         # Index of computational tasks
+├── dependencies.md              # Mermaid graph of relationships
+├── intents/
+│   └── intent-{n}.md            # Per-intent: statement, mode, decision rule, hypotheses
+├── datasets/
+│   └── dataset-{n}.md           # Per-dataset: provenance, governance, modalities
+├── analyses/
+│   └── analysis-{n}.md          # Per-analysis: storyboarded flow, validation strategy
+└── registers/
+    └── decisions.md             # Append-only decisions log
+```
+
+Schema reference lives at `skills/biospec-templates/references/schema.md`.
+
+## What the skills enforce
+
+Every write-capable BioSpec skill applies the same rules:
+
+- **No invention** — fields stay blank rather than be filled with guesses.
+- **Propose-first writes** — every change is shown to you as a Before/After diff before it's applied.
+- **Source citation** — autofill cites the source path and excerpt for each nontrivial fill.
+- **Reference vs implementation** — methods and tools mentioned as background go into `Prior Work & Inspiration`, not into the analysis plan.
+- **Scope lock** — when you name a cohort or component, the skill ignores unrelated parts of the project until you widen scope.
+- **Template integrity** — headings, `<details>` blocks, and the repeated `### Step {s}` blocks in analyses are preserved exactly.
+
+Each skill's own rules and Red Flags table are documented at the top of its `SKILL.md`. The full developer-facing guide lives in [AGENTS.md](AGENTS.md).
 
 ## Contributing
 
@@ -221,8 +96,8 @@ The approach for contributions is currently being decided. Please check back lat
 
 ## License
 
-See [LICENSE.md](LICENSE.md) for details.
+AGPL-3.0. See [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-BioSpec is partly inspired by [GitHub's spec-kit](https://github.com/github/spec-kit), and the BioSpec CLI is adapted from their open-source codebase. We encourage you to try spec-kit for planning and implementing the downstream tasks defined in your BioSpec project specifications.
+BioSpec was partly inspired by [GitHub's spec-kit](https://github.com/github/spec-kit). The skill structure follows the conventions of [obra/superpowers](https://github.com/obra/superpowers) and [mattpocock/skills](https://github.com/mattpocock/skills), and Anthropic's [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices).
