@@ -1,6 +1,6 @@
 ---
 template_name: Analysis Overview
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: 2026-05-25
 ---
 

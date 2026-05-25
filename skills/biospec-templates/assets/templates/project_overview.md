@@ -1,6 +1,6 @@
 ---
 template_name: Project Overview
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -26,17 +26,34 @@ Common project types:
 - shared task: Multi-site collaboration on common objectives
 -->
 - **Project Type**:
-- **Start Date**: <!-- If exact, use YYYY-MM-DD format by default -->
-- **Expected Duration**: 
-- **Principal Investigator/Lead**: 
-- **Teams involved**: 
-- **Primary Repository**: <!-- URL or Name -->
+- **Start Date**: <!-- ISO date if known (YYYY-MM-DD); otherwise YYYY-Qn or YYYY-MM -->
+- **Expected Duration**: <!-- E.g., "6 months", "2 years", "open-ended" -->
+- **Principal Investigator/Lead**: <!-- Name; optionally affiliation + ORCID -->
+- **Teams & Collaborators**: <!-- Internal teams plus external collaborators (clinical sites, consortia, industry) -->
+- **Primary Repository**: <!-- URL or Name. Source of truth for the project repo URL; project_resources.md links here, do not redeclare. -->
+- **Funding / Grant**:
+  <!-- Funder, scheme, grant code, award ID. E.g., "NHMRC Ideas Grant 2020042; NIH R01CA123456". Required for acknowledgements in publications. -->
+- **Conflict of interest / Disclosures**:
+  <!-- Declared COIs at the project level, or "None declared". -->
 
 ## Brief Summary
-<!-- A clear, concise paragraph describing the project's purpose, goals and main cohort/dataset -->
+<!-- A clear, concise paragraph (3-5 sentences) describing the project's purpose, goals, and main cohort/dataset. Aim for something a non-specialist collaborator could read in 30 seconds. -->
+
+## Governance
+<!--
+Project-level governance separate from per-dataset terms (which live in
+dataset.md → Governance). Use this section for approvals and commitments
+that span the whole project.
+-->
+- **Ethics approval**:
+  <!-- Project-level HREC / IRB number(s) covering the work as a whole; e.g., "HREC/2024/0123". Per-dataset ethics live in datasets/dataset-{n}.md → Governance. -->
+- **Pre-registration**:
+  <!-- OSF / clinicaltrials.gov / protocols.io / internal protocol registration ID where applicable. -->
+- **Data sharing & FAIR plan**:
+  <!-- Target repository for deposition (GEO, EGA, ArrayExpress, Zenodo, Figshare), embargo policy, and any FAIR commitments (controlled vocabularies, persistent identifiers, metadata standards). Funders increasingly require this upfront. -->
 
 ## Keywords
-<!-- Words or phrases (separated by commas ',') that best desribe the project -->
+<!-- Words or phrases (separated by commas ',') that best describe the project -->
 
 ## Scientific Context
 <!-- For tool/method development projects not tied to a specific biological system, this section may be brief or N/A -->
@@ -48,12 +65,18 @@ Common project types:
   - Developmental Stage: <!-- E.g., adult -->
 
 <!--
-Comma-separated list of modalities/omics involved in the project.
-Examples: genomic, transcriptomic (scRNAseq, WTS), proteomic, metabolomic,
-multi-omic, imaging, Phenocycler, Visium, Xenium, annotated pathology slides,
-SNP microarray, Organoid, Patient Derived Xenograft
+Modalities / assays intended across the project. Per-dataset specifics
+(platform, chemistry, reference genome) live in datasets/dataset-{n}.md
+under each `### Modality {m}` block; this field is the project-wide scope.
+Group your entries along three axes:
+  - Omics layer: e.g. genomic, transcriptomic, proteomic, metabolomic, multi-omic
+  - Assay / platform: e.g. scRNA-seq, WTS, WGS, Visium, Xenium, Phenocycler, SNP microarray, H&E pathology
+  - Sample model: e.g. primary tissue, organoid, PDX, cell line
 -->
-- **Biological Scale**:
+- **Modalities & Assays**:
+  - Omics layer:
+  - Assay / platform:
+  - Sample model:
 
 - **Key Biological Processes of Interest**: <!-- Bullet-point list e.g., pathways, interactions, architectures -->
 
@@ -73,5 +96,5 @@ SNP microarray, Organoid, Patient Derived Xenograft
 
 ## Prior Work & Inspiration
 - **Reference Studies**: <!-- Prior studies that inspired or have methods/data included in the present project -->
-- **Methods of interest to Reproduce/Adapt**: <!-- Computational tools, methods or strategies of interest: Either GitHub repositories or publications -->
-- **Key Papers/Resources**: <!-- Background reading or related work to help others familirise themself with the project. Could be a link to a citation repository. -->
+- **Methods to Adapt**: <!-- Computational tools, methods or strategies of interest: either GitHub repositories or publications. Treat as candidates for adaptation, not commitments. -->
+- **Key Papers/Resources**: <!-- Background reading or related work to help others familiarise themselves with the project. Could be a link to a citation repository. -->

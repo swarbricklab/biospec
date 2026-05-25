@@ -1,6 +1,6 @@
 ---
 template_name: Project Overview
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: 2026-05-25
 ---
 
@@ -12,12 +12,19 @@ last_updated: 2026-05-25
 - **Start Date**: 2026-04-01
 - **Expected Duration**: 18 months
 - **Principal Investigator/Lead**: Dr Example
-- **Teams involved**: Example Lab
+- **Teams & Collaborators**: Example Lab
 - **Primary Repository**: https://example.org/example-project
+- **Funding / Grant**: NHMRC Ideas Grant 2020042 (example)
+- **Conflict of interest / Disclosures**: None declared
 
 ## Brief Summary
 Characterise TIL subsets in a 40-patient breast cancer cohort using scRNA-seq,
 linking subtype composition to recurrence-free survival.
+
+## Governance
+- **Ethics approval**: HREC/2024/0123
+- **Pre-registration**: Internal protocol BRCA-TIL-001
+- **Data sharing & FAIR plan**: GEO deposit at first publication; ontologies via Cell Ontology and MONDO.
 
 ## Keywords
 tumour-infiltrating lymphocytes, breast cancer, scRNA-seq, survival analysis
@@ -28,7 +35,10 @@ tumour-infiltrating lymphocytes, breast cancer, scRNA-seq, survival analysis
   - Organ/Tissue Type(s): breast tumour
   - Cell Types(s): CD8+ T cells, regulatory T cells
   - Developmental Stage: adult
-- **Biological Scale**: transcriptomic (scRNA-seq)
+- **Modalities & Assays**:
+  - Omics layer: transcriptomic
+  - Assay / platform: 10x Chromium 3' v3 scRNA-seq
+  - Sample model: primary tumour tissue
 - **Key Biological Processes of Interest**: T cell exhaustion, clonal expansion
 
 ## Expected Project Outputs
@@ -47,5 +57,5 @@ tumour-infiltrating lymphocytes, breast cancer, scRNA-seq, survival analysis
 
 ## Prior Work & Inspiration
 - **Reference Studies**: TBD
-- **Methods of interest to Reproduce/Adapt**: TBD
+- **Methods to Adapt**: TBD
 - **Key Papers/Resources**: TBD

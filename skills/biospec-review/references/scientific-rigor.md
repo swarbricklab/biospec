@@ -15,7 +15,7 @@ Critical mode — Exploratory mode does not apply this lens.
 
 Before raising any concern, confirm you have read:
 - The named subtemplate's `Statement` / `Description` field.
-- The `Success Criteria` and (intent only) `Decision rule / what would change our mind`.
+- The `Success Criteria` and (intent only) `Falsifier`.
 - The `Related Components` block, plus the one-hop linked files.
 - Relevant `registers/decisions.md` entries — a "missing control" may already be a logged decision with a recorded rationale.
 
@@ -26,9 +26,9 @@ If a concern depends on context outside this read-set, say so explicitly and ask
 For `biospec/intents/intent-{n}.md`:
 
 - **Specificity**. Is the *Statement* phrased so a stranger could tell whether the intent has succeeded? "Characterise X" rarely is. "Identify TIL subsets whose abundance differs between recurrence and non-recurrence at HR > 1.3, FDR < 0.1" is.
-- **Decision rule**. Is the falsifier objective and pre-committed? If "nothing would change our mind", the intent is unscientific in the Popperian sense.
-- **Mode coherence**. Does the declared `Mode` (targeted / exploratory / methods-dev) match the structure? A `targeted` intent without hypotheses is suspicious; an `exploratory` intent with a single primary endpoint is suspicious.
-- **Hypothesis quality** (if present). Null and alternative hypotheses both stated? Alternatives directional or non-directional and that choice explicit? Rationale grounded in cited prior work or stated as assumption?
+- **Falsifier**. Is the falsifier objective and pre-committed? If "nothing would change our mind", the intent is unscientific in the Popperian sense.
+- **Mode coherence**. Does the declared `Mode` (confirmatory / exploratory / methodological) match the structure? A `confirmatory` intent without hypotheses or without `Pre-specified: Yes` flags is suspicious; an `exploratory` intent with a single primary endpoint is suspicious.
+- **Hypothesis quality** (if present). Null and alternative hypotheses both stated? `Direction` (directional / non-directional) explicit? `Pre-specified` flag honest? Rationale grounded in cited prior work or stated as assumption?
 - **Outcomes**. Are *Expected Outcomes* measurable? Tied to specific tests / metrics / artefacts?
 - **Power.** Has the intent considered what cohort size or effect size it needs to detect? (Often missing.)
 - **Alternative hypotheses**. Are competing explanations acknowledged?
@@ -52,20 +52,20 @@ For `biospec/datasets/dataset-{n}.md`:
 For `biospec/analyses/analysis-{n}.md`:
 
 - **Endpoints and primary contrasts**. Defined? Aligned with the linked intent's Statement and Success Criteria?
-- **Analysis Flow**. Each `### Step {s}` self-contained — clear inputs, outputs, key choices? Or hand-wave?
+- **Analysis Flow**. Each `### Step {s}` self-contained — clear inputs, outputs, parameters & choices? Or hand-wave?
 - **Confounding**. Acknowledged covariates and their handling (regression terms, stratification, matching)?
 - **Multiple testing**. Correction method, family, threshold stated? Family appropriate (within-analysis vs across-intents)?
-- **Leakage**. Outcome variables fenced out of feature selection / clustering / HVG calling?
-- **Sensitivity**. Plan to vary resolution / threshold / batch / tool? Or single-pipeline reporting?
+- **Information leakage**. Outcome variables fenced out of feature selection / clustering / HVG calling?
+- **Sensitivity analysis**. Plan to vary resolution / threshold / batch / tool? Or single-pipeline reporting?
 - **Controls**. Positive and negative controls identified where applicable (e.g. known marker genes, healthy reference, permuted labels)?
 - **Reproducibility**. Environment pinned (lockfile)? Seeds set? Output location stable?
-- **Failure modes**. Concrete fallbacks specified? Tied to the intent's decision rule?
+- **Failure modes**. Concrete fallbacks specified? Tied to the intent's `Falsifier`?
 
 ## Cross-cutting concerns
 
 - **Intent → Dataset → Analysis coherence**. Does the analysis actually answer the intent on the linked dataset, or is there a transitive gap (intent asks A, analysis answers B)?
 - **Resource feasibility**. Does `project_resources.md` show the compute / storage / software the analysis requires? Or is there an implicit ask?
-- **Decision-rule alignment**. Does the analysis's Failure modes section say what happens when the intent's decision rule fires?
+- **Falsifier alignment**. Does the analysis's Failure modes section say what happens when the intent's `Falsifier` fires?
 - **Scope creep**. Are there fields with content that goes beyond what the intent committed to? Surface it.
 - **Internal consistency**. Sample counts in `dataset.md` consistent with assumptions in `analysis.md`? Output locations consistent across linked files?
 

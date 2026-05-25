@@ -1,6 +1,6 @@
 ---
 template_name: Dataset Overview
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -59,5 +59,13 @@ Examples:
 - 
 
 ### Data Sharing & Publication
-<!-- Overall strategy for data sharing across datasets -->
+<!--
+Cross-dataset reconciliation only — where licences, embargoes, or release
+timing conflict across datasets and need a unified plan. Per-dataset
+governance (licence, DUA, embargo end date, permitted/forbidden uses) lives
+in datasets/dataset-{n}.md → Governance and is the source of truth.
+
+Project-level FAIR commitments and primary deposition target live in
+project_overview.md → Data sharing & FAIR plan.
+-->
 -

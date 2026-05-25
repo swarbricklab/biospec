@@ -1,7 +1,7 @@
 ---
 template_name: Computational Task/Analysis
 analysis_id: {n}
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -46,7 +46,7 @@ as the analysis needs.
 - **What runs**: <!-- The tool, function, or notebook executed in this step -->
 - **Inputs**: <!-- Data/files/parameters consumed -->
 - **Outputs**: <!-- Files/objects produced -->
-- **Key choices**: <!-- Parameter choices, normalisation, filters, thresholds — and why -->
+- **Parameters & choices**: <!-- Parameter values, normalisation, filters, thresholds — and why. Material/cross-cutting choices should also be logged in registers/decisions.md with a DR{n} reference. -->
 
 ## Execution & Reproducibility
 <!--
@@ -95,12 +95,23 @@ benchmarks, acceptance criteria) under the same headings.
 <!-- Quick checks that intermediate outputs look right (e.g., marker gene specificity, sample sheet alignment, expected sample counts). -->
 -
 
-### Leakage
-<!-- Information that must NOT cross the boundary between training/test, discovery/validation, or model input/outcome. -->
+### Information leakage
+<!--
+Information that must NOT cross the boundary between training/test,
+discovery/validation, or model input/outcome. Worked example: the gene-set
+used to *select* features must not include the outcome label itself, or
+performance estimates will be optimistically biased. List the boundaries
+this analysis must respect and how you will enforce them.
+-->
 -
 
-### Sensitivity
-<!-- Robustness to parameter choices, alternate batches, alternative tools. Where will you vary inputs to confirm results are not artefacts? -->
+### Sensitivity analysis
+<!--
+Robustness to parameter choices, alternate batches, alternative tools. Where
+will you vary inputs to confirm results are not artefacts? (Distinct from
+biostatistical sensitivity/specificity, which belong in Success Criteria or
+the statistical-model description.)
+-->
 -
 
 ### Multiple testing

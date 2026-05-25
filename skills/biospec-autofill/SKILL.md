@@ -1,6 +1,6 @@
 ---
 name: biospec-autofill
-description: Use when the user provides external source documents (notes, manuscripts, grant proposals, attached files, repository docs) and asks to populate or fill BioSpec templates. Extracts only high-confidence, cited content. Reserved for source-driven fills — if the user dictates content directly, route to biospec-edit instead.
+description: Use when external sources (grants, manuscripts, slides, spreadsheets, repository docs/code, attachments) should populate BioSpec templates from cited evidence. Source-driven only; direct dictation routes to biospec-edit.
 ---
 
 # biospec-autofill
@@ -9,41 +9,42 @@ description: Use when the user provides external source documents (notes, manusc
 
 ## Route check
 
-If the user dictated specific content directly and no external source is involved → this is `biospec-edit`. Autofill is for extracting from user-provided sources (attachments, named file paths, or — with explicit consent — a repo scan).
+If the user dictated content directly and no external source is involved -> `biospec-edit`. Autofill extracts from attachments, named paths, or repo scans with explicit consent.
 
 ## Core Pattern
 
-1. **Pre-flight.** Confirm `biospec/` exists. Missing singleton overviews → stop, recommend `biospec-setup`.
-2. **Scope.** Parse for any scope lock (named cohort, project, component). Apply strictly — ignore other-project content in the same source.
-3. **Source resolution**, in order: attached/pasted files → named file paths → repo scan **only with explicit user yes**.
-4. **Extract.** Map content to fields. For every nontrivial fill (anything beyond a single proper noun), record source path + short excerpt.
-5. **Reference vs implementation.** Method/tool/dataset mentions are *background* unless the project explicitly commits. Background → *Prior Work & Inspiration*. Uncertain → *Option (unconfirmed)*. Only confirmed commitments populate `analyses/`, `datasets/`, `project_resources.md`.
-6. **Propose, then apply.** Per-field summary with citations; ask approval; apply on yes; update `last_updated`.
-7. **Report.** Path classes scanned and skipped; fields filled and left blank; citation map.
+1. **Pre-flight.** Confirm `biospec/` exists; read current BioSpec context and target template(s). Missing singleton overviews -> stop, recommend `biospec-setup`.
+2. **Scope.** Parse any scope lock (cohort, project, component) and ignore unrelated source content.
+3. **Resolve sources.** Use attached/pasted files -> named file paths -> repo scan **only with explicit user yes**.
+4. **Triage and route.** For artifact parsing, target fields, orchestration, and new-vs-existing components, read `references/source-parsing.md` and `references/routing-and-atomicity.md`.
+5. **Extract.** Map to fields. For every nontrivial fill, record source path + locator (page/slide/cell/section) + short excerpt.
+6. **Classify evidence.** Use `confirmed commitment`, `observed implementation`, `background/reference`, or `option (unconfirmed)`. Only the first two may populate `analyses/`, `datasets/`, or `project_resources.md`; label observed implementation.
+7. **Propose, then apply.** Summarise per-field fills with citations; ask approval; apply on yes; update `last_updated`; preserve provenance inline or in Notes/citation map.
+8. **Report.** Path classes scanned/skipped; fields filled/blank; citation map.
 
 ## Scan policy (when the user authorises a repo scan)
 
-**Read**: `README*`, `PROJECT*`, `docs/**`, proposal/grant/manuscript/methods files, `pyproject.toml` / `renv.lock` / `environment.yml` / `requirements.txt`, `Snakefile` / `nextflow.config` / `*.nf` / `*.wdl`, `Dockerfile` / `Singularity`, workflow configs, `.github/ISSUE_TEMPLATE/*`.
+**Read**: `README*`, `PROJECT*`, `docs/**`, proposal/grant/manuscript/methods, PDF/Office/spreadsheet/manifest/config files, env/lock/container files, workflow files, `.github/ISSUE_TEMPLATE/*`.
 
-**Skip and report**: raw data (`*.fastq*`, `*.bam`, `*.h5*`, `*.zarr`), large binaries, `.env*` and secret/credential files, notebook outputs (parse `.ipynb` cells but ignore `outputs`), `node_modules/`, `__pycache__/`, build artefacts, anything inside an access-controlled clinical/genomic tree.
+**Skip and report**: raw data (`*.fastq*`, `*.bam`, `*.h5*`, `*.zarr`), large binaries, `.env*` and secrets, notebook outputs, dependency/cache/build artefacts. For access-controlled clinical/genomic trees, do not bulk-scan; read only explicitly named metadata/docs, avoid raw participant tables, redact identifiers in excerpts.
 
-**Technical-stack inference** from file presence (no content read): extensions → language/runtime; `Snakefile`/`*.nf` → workflow system. Use *only* if the user authorised this inference path.
+**Technical-stack inference** from file presence (no content read): extensions -> language/runtime; `Snakefile`/`*.nf` -> workflow system. Use *only* if the user authorised this inference path.
 
 ## Source-filtering kernel (for multi-project sources)
 
 When a source spans multiple projects:
 
-- **Verbatim retention.** Do not paraphrase; include or drop sections wholesale.
-- **Deletion only.** Filter by removal, never addition.
-- **Conservative.** When in doubt about relevance, keep it.
-- **Preserve structure.** Maintain markdown structure; drop empty headers after filtering.
+- **Build scoped evidence by deletion.** Include or drop source sections wholesale; preserve structure and drop empty headers.
+- **Conservative.** When in doubt about relevance, keep the source section but mark uncertainty.
+- **Extraction may synthesize.** BioSpec fields may combine multiple cited snippets; cite each one.
 
 ## Common Mistakes
 
 - Inferring methods from prior-work mentions and adding to `analyses/` — that's background.
 - Filling `analysis.md` Methods from a `pyproject.toml` — presence ≠ commitment.
-- Silently overwriting existing content that conflicts with the source. Append `[From source: <path>]` and flag for the user.
+- Silently overwriting existing conflicts. Append `[From source: <path>]` and flag.
 - Filling ambiguous fields. Leave blank.
+- Losing page/slide/cell provenance after applying edits.
 
 ## Red Flags
 

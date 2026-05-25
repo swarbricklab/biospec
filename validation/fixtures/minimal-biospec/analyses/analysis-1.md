@@ -1,7 +1,7 @@
 ---
 template_name: Computational Task/Analysis
 analysis_id: 1
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: 2026-05-25
 ---
 
@@ -70,10 +70,10 @@ subset abundance, fit Cox proportional-hazards models against RFS.
 ### Sanity checks
 - Marker gene specificity per cluster (canonical CD8, CD4, FOXP3)
 
-### Leakage
+### Information leakage
 - Survival outcome must not be used in clustering or HVG selection
 
-### Sensitivity
+### Sensitivity analysis
 - Repeat at resolutions 0.4, 0.6, 1.0, 1.2 — annotation must be stable
 - Drop-one-batch survival re-fit
 
@@ -82,7 +82,7 @@ subset abundance, fit Cox proportional-hazards models against RFS.
 
 ### Failure modes
 - If proportional-hazards fails: switch to time-varying or stratified Cox
-- If no subset reaches HR threshold: report null per decision rule on Intent 1
+- If no subset reaches HR threshold: report null per Intent 1 Falsifier
 
 ## Related Components
 **Addresses Intents**:

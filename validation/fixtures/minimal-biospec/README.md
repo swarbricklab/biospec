@@ -15,6 +15,6 @@ Behavioural assertions baked into this fixture:
 - Storyboard repeated-header blocks in `analyses/analysis-1.md` (Step 1 / Step 2)
   must not be collapsed by `biospec-edit`.
 - All cross-references resolve via relative paths from this directory.
-- Schema version is `0.3.0` everywhere.
-- A two-cluster `decisions.md` register entry exists for `biospec-review` to
+- Schema version is `0.3.1` everywhere.
+- A two-entry `registers/decisions.md` (DR1, DR2) exists for `biospec-review` to
   pick up via one-hop dependency read.

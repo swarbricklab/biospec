@@ -1,6 +1,6 @@
 ---
 template_name: Analysis Overview
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -31,8 +31,17 @@ last_updated: YYYY-MM-DD
 <!-- Add new analyses by creating analysis-{n}.md in analyses/ and adding a row to the appropriate priority section above -->
 
 ## Summary Table
-<!-- Aggregated view of all analyses -->
-<!-- Status values: Planned | In Progress | Blocked | Complete | Deferred -->
+<!--
+Aggregated view of all analyses.
+
+Column mapping guidance:
+- Analysis ID: link text should match the analysis title (`Analysis {n}: {Descriptor}`).
+- Descriptor: mirrors the title — kept for table scannability.
+- Priority: mirrors analyses/analysis-{n}.md → Priority Level; that file is the source of truth.
+- Addresses Intents: comma-separated intent IDs (e.g. `I1, I2`).
+- Uses Datasets: comma-separated dataset IDs (e.g. `D1, D3`).
+- Status values: Planned | In Progress | Blocked | Complete | Deferred.
+-->
 | Analysis ID | Descriptor | Priority | Addresses Intents | Uses Datasets | Status |
 |-------------|------------|----------|-------------------|---------------|--------|
 | [Analysis 1: {Descriptor}](analyses/analysis-1.md)  |  | Must Have |  |  |  |
@@ -42,10 +51,22 @@ last_updated: YYYY-MM-DD
 ## Overall Analysis Strategy
 <!-- High-level computational considerations across all analyses -->
 
-### Analysis Pipeline
-<!-- How do analyses connect? What is the overall workflow? -->
+### Execution Order & Artefact Reuse
+<!--
+Narrative description of how analyses connect: which analysis's outputs feed
+which downstream analysis, and the rationale for the ordering. Capture the
+*what* (e.g. "analysis A1 produces a cleaned count matrix that A2 and A3
+both consume") rather than restating the edge list — the authoritative edge
+graph lives in dependencies.md (Project Graph).
+-->
 - 
 
-### Cross-Analysis Dependencies
-<!-- Dependencies between different analyses. Is there an order in which analyses need to be completed? -->
+### Sequencing Notes
+<!--
+Free-text notes on ordering, blockers, or sequencing risks across analyses.
+The authoritative analysis-to-analysis dependency edges live in
+dependencies.md (Project Graph) — use this section for narrative caveats
+that the graph can't carry (e.g. "A4 should only start after A2 is locked
+because of cohort overlap").
+-->
 - 

@@ -1,6 +1,6 @@
 ---
 template_name: Project Resources
-schema_version: 0.3.0
+schema_version: 0.3.1
 last_updated: YYYY-MM-DD
 ---
 
@@ -39,13 +39,24 @@ last_updated: YYYY-MM-DD
 
 ## Version Control
 ### Code Management
-- **Repository Type**: <!-- git | svn | other -->
+<!--
+Source of truth for the primary repository URL lives in
+project_overview.md → Primary Repository. The fields below capture how the
+team works with that repo and any secondary repos.
+-->
+- **Repository Type**: <!-- git | other -->
 - **Repository Name**: 
-- **Repository Location**: <!-- Should match project_overview.md -->
-- **Other Associated Repositories**: <!-- Are there any secondary repositories related to your project -->
+- **Repository Location**: <!-- Should match project_overview.md → Primary Repository (do not redeclare a different URL) -->
+- **Other Associated Repositories**: <!-- Any secondary repositories related to your project (e.g. data repo, fork, internal mirror) -->
 
 ### Environment Management
-- **Container Preference**: <!-- Docker | Singularity | Conda | None -->
+<!--
+Project-wide defaults captured here. Per-analysis deviations (specific
+lockfile path, alternate container, special compute profile) live in
+analysis.md → Execution & Reproducibility — they override these defaults
+for that analysis only.
+-->
+- **Container Preference**: <!-- Docker | Apptainer | Singularity | Conda | None -->
 - **Package Installation**: 
 
 ### Software Stack
